@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li class="nav-item theme-text">
-                <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> CORK </a>
+                <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> Agency Builder </a>
             </li>
         </ul>
 

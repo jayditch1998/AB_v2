@@ -21,7 +21,7 @@
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> CORK </a>
+                            <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> Agency Builder </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -69,6 +69,9 @@
                         <ul class="dropdown-menu submenu list-unstyled" id="apps" data-bs-parent="#accordionExample">
                             <li class="{{ Request::routeIs('calendar') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/calendar"> Calendar </a>
+                            </li>
+                            <li class="{{ Request::routeIs('admin.websites') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/admin/websites"> Websites </a>
                             </li>
                             <li class="{{ Request::routeIs('chat') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/chat"> Chat </a>

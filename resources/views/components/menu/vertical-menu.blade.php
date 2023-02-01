@@ -78,6 +78,34 @@
                             </div>
                         </a>
                     </li>
+
+                    <li class="menu {{ Request::is('*/admin.websites/*') ? "active" : "" }}">
+                        <a href="#Websites" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/admin.websites/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="{{ Request::routeIs('admin.websites') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                <span>Websites</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/admin.websites/*') ? "show" : "" }}" id="Websites" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('admin.websites')}}">
+                                <a href="{{getRouterValue();}}/admin/websites">All Websites </a>
+                            </li>
+                            <li class="{{ Request::routeIs('sales') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/dashboard/sales"> Category </a>
+                            </li>
+                        </ul>
+                        <!-- <li class="menu {{ Request::routeIs('admin.websites') ? 'active' : '' }}">
+                            <a href="{{getRouterValue();}}/admin/websites" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                    <span>Websites</span>
+                                </div>
+                            </a>
+                        </li> -->
+                    </li>
                     
                     <li class="menu {{ Request::routeIs('chat') ? 'active' : '' }}">
                         <a href="{{getRouterValue();}}/app/chat" aria-expanded="false" class="dropdown-toggle">
