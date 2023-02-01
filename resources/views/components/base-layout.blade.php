@@ -18,7 +18,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>{{ $pageTitle }}</title>
+    <title>Agency Builder</title>
     <link rel="icon" type="image/x-icon" href="{{Vite::asset('resources/images/favicon.ico')}}"/>
     @vite(['resources/scss/layouts/modern-light-menu/light/loader.scss'])
 

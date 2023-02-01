@@ -1,7 +1,7 @@
 <x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
-        {{$title}} 
+        Agency Builder
     </x-slot>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
