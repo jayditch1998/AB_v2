@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\WebsitesController;
-
+use App\Http\Controllers\Websites\WebsitesController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\WebsitesController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// 6
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,17 @@ use App\Http\Controllers\Admin\WebsitesController;
 */
 
 Route::name('admin.')->prefix('admin')->group(function () {
+  Route::prefix('websites')->group(function () {
+    Route::get('/', [WebsitesController::class, 'index'])->name('websites');
+  });
+})->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+*/
+Route::name('')->prefix('user')->group(function () {
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
   });
