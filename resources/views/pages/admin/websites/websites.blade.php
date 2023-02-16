@@ -51,7 +51,7 @@
                     <tbody>
                     @foreach($data as $website)
                         <tr>
-                            <td>{{str($website->user->name)->title}}</td>
+                            <td>{{$website->user->name}}</td>
                             <td>{{$website->name}}</td>
                             <td>{{$website->category_name}}</td>
                             <td><a target="_blank" href="{{$website->url}}">{{ __('Visit Website') }}</td>
@@ -63,13 +63,45 @@
                                 @endif
                             </td>
                             <td>{{$website->business_count}} Businesses</td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle table-cancel"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></td>
-                        </tr>
+                            <td class="text-center">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
+                                            <a 
+                                                class="dropdown-item view-details" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editModal" 
+                                                href="#"
+                                                data-website_id="{{$website->id}}" 
+                                                data-name="{{$website->name}}" 
+                                                data-category_id="{{$website->category_id}}" 
+                                                data-url="{{$website->url}}"
+                                                data-websites_categories="{{$categories}}"
+                                                onclick='editModal(
+                                                    {{$website->id}},
+                                                    "{{$website->name}}",
+                                                    {{$website->category_id}},
+                                                    "{{$website->category_name}}",
+                                                    "{{$website->url}}",
+                                                    {{$website->user_id}},
+                                                    "{{$website->user->name}}"
+                                                    )'
+                                            >Edit</a>
+                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
+                                            <a class="dropdown-item" href="/admin/websites/delete?id={{$website->id}}">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                     @endforeach
                     </tbody>
                 </table>
 
-                <!-- Modal -->
+                <!-- Create Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -82,26 +114,91 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <div class="form-group">
-                                    <label for="exampleFormControlInput1">Website Name</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" value="">
+                                <form method="post" action='/admin/websites/create'>
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">Website Name</label>
+                                        <input required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
 
-                                    <label for="exampleFormControlInput1">Website Category</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" value="">
+                                        <label for="exampleFormControlInput2">Website Category</label>
+                                        <!-- <input required type="text" name="website_category" class="form-control" id="exampleFormControlInput2" value=""> -->
+                                        <select id="category" class="form-control" name="category_id">
+                                            <option value="all" selected>Select Category</option>
+                                            @foreach($categories as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                            <!-- <option>lkfdsjlkfds</option> -->
+                                        </select>
+                                        <label for="exampleFormControlInput3">Website url</label>
+                                        <input required type="text" name="url" class="form-control" id="exampleFormControlInput3" value="">
 
-                                    <label for="exampleFormControlInput1">Website url</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" value="">
+                                        <label for="exampleFormControlInput4">Assign a User</label>
+                                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
+                                        <select id="website_user" class="form-control" name="user_id">
+                                            <option value="all" selected>Select User</option>
+                                            @foreach($users as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                            <!-- <option>lkfdsjlkfds</option> -->
+                                        </select>
 
-                                    <label for="exampleFormControlInput1">Assign a User</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" value="">
-
-
+                                    </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-light-dark" data-bs-dismiss="modal">Discard</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Website</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
+                                </button>
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-light-dark" data-bs-dismiss="modal">Discard</button>
-                                <button type="button" class="btn btn-primary">Save</button>
-                            </div>
+                            <div class="modal-body">
+                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
+                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
+                                <form method="post" action='/admin/websites/update'>
+                                    @csrf
+                                    <input type="hidden" id="website_id" name="id">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">Website Name</label>
+                                        <input id="name" required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput2">Website Category</label>
+                                        <select  class="form-control" name="category_id">
+                                            <option id="category_id" value="all" selected>Select Category</option>
+                                            @foreach($categories as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="exampleFormControlInput3">Website url</label>
+                                        <input id="url" required type="text" name="url" class="form-control" id="exampleFormControlInput3" value="">
+
+                                        <label for="exampleFormControlInput4">Assign a User</label>
+                                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
+                                        <select class="form-control" name="user_id">
+                                            <option id="user_id" value="all" selected>Select User</option>
+                                            @foreach($users as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-light-dark" data-bs-dismiss="modal">Discard</a>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -128,8 +225,21 @@
                 },
                 "stripeClasses": [],
                 "lengthMenu": [10, 20, 50],
-                "pageLength": 10
+                "pageLength": 10,
+                "aaSorting": []
             });
+
+            function editModal(id, name, category_id, category_name, url, user_id, user_name) {
+                document.getElementById("name").value = name;
+                const cat = document.getElementById("category_id");
+                cat.value = category_id;
+                cat.text = category_name;
+                document.getElementById("url").value = url;
+                const owner =document.getElementById("user_id");
+                owner.value = user_id;
+                owner.text = user_name;
+                document.getElementById("website_id").value = id;
+            }
         </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

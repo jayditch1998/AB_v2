@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Auth;
 Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
+    Route::post('/create', [WebsitesController::class, 'create'])->name('website.create');
+    Route::get('/delete', [WebsitesController::class, 'delete'])->name('website.delete');
+    Route::post('/update', [WebsitesController::class, 'update'])->name('website.update');
   });
 });
 

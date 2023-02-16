@@ -22,7 +22,7 @@
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> CORK </a>
+                            <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> Agency B. </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
