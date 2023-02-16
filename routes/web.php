@@ -26,7 +26,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
   });
-})->middleware('auth');
+});
 
 /*
 |--------------------------------------------------------------------------
