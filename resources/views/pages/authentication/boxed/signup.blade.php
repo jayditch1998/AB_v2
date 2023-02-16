@@ -1,7 +1,7 @@
 <x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
-        {{$title}} 
+        {{$title}}
     </x-slot>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -12,23 +12,23 @@
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
-    
+
     <div class="auth-container d-flex">
 
         <div class="container mx-auto align-self-center">
-    
+
             <div class="row">
-    
+
                 <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-8 col-12 d-flex flex-column align-self-center mx-auto">
                     <div class="card mt-3 mb-3">
                         <div class="card-body">
-    
+
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    
+
                                     <h2>Sign Up</h2>
                                     <p>Enter your email and password to register</p>
-                                    
+
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
@@ -58,13 +58,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-12">
                                     <div class="mb-4">
                                         <button class="btn btn-secondary w-100">SIGN UP</button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-12 mb-4">
                                     <div class="">
                                         <div class="seperator">
@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-4 col-12">
                                     <div class="mb-4">
                                         <button class="btn  btn-social-login w-100 ">
@@ -82,7 +82,7 @@
                                         </button>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 col-12">
                                     <div class="mb-4">
                                         <button class="btn  btn-social-login w-100">
@@ -91,7 +91,7 @@
                                         </button>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 col-12">
                                     <div class="mb-4">
                                         <button class="btn  btn-social-login w-100">
@@ -103,22 +103,22 @@
 
                                 <div class="col-12">
                                     <div class="text-center">
-                                        <p class="mb-0">Already have an account ? <a href="javascript:void(0);" class="text-warning">Sign in</a></p>
+                                        <p class="mb-0">Already have an account ? <a href="{{route('signin')}}" class="text-warning">Sign in</a></p>
                                     </div>
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </div>
 
     </div>
-    
+
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
 

@@ -1,9 +1,9 @@
-{{-- 
+{{--
 
 /**
 *
 * Created a new component <x-navbar.style-horizontal-menu/>.
-* 
+*
 */
 
 --}}
@@ -13,7 +13,7 @@
     <header class="header navbar navbar-expand-sm expand-header">
 
         <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></a>
-        
+
         <ul class="navbar-item theme-brand flex-row  text-center">
             <li class="nav-item theme-logo">
                 <a href="{{getRouterValue();}}/dashboard/analytics">
@@ -78,14 +78,14 @@
                                         <h6 class="">Kara Young</h6>
                                         <p class="">1 hr ago</p>
                                     </div>
-                                    
+
                                     <div class="icon-status">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="dropdown-item">
                             <div class="media ">
                                 <img src="{{Vite::asset('resources/images/profile-15.jpeg')}}" class="img-fluid me-2" alt="avatar">
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="drodpown-title notification mt-2">
                             <h6 class="d-flex justify-content-between"><span class="align-self-center">Notifications</span> <span class="badge badge-secondary">16 New</span></h6>
                         </div>
@@ -169,10 +169,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
-                
+
             </li>
 
             <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
@@ -212,12 +212,12 @@
                         </a>
                     </div>
                     <div class="dropdown-item">
-                        <a href="auth-boxed-signin.html">
+                        <a href="{{route(logout)}}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Log Out</span>
                         </a>
                     </div>
                 </div>
-                
+
             </li>
         </ul>
     </header>

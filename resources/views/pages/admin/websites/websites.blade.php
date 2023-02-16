@@ -14,7 +14,7 @@
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
-    
+
     <!-- BREADCRUMB -->
     <div class="page-meta">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -27,7 +27,7 @@
     <!-- /BREADCRUMB -->
 
     <div class="row layout-top-spacing">
-    
+
         <div class="col-sm-12 pb-3 d-flex justify-content-end">
             <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Add Website</button>
         </div>
@@ -36,7 +36,7 @@
             <div class="widget-content widget-content-area br-8">
                 <table id="zero-config" class="table dt-table-hover" style="width:100%">
 
-                
+
                     <thead>
                         <tr>
                             <th>User</th>
@@ -49,9 +49,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($data as $website)                                            
+                    @foreach($data as $website)
                         <tr>
-                            <td>Tiger Nixon</td>
+                            <td>{{str($website->user->name)->title}}</td>
                             <td>{{$website->name}}</td>
                             <td>{{$website->category_name}}</td>
                             <td><a target="_blank" href="{{$website->url}}">{{ __('Visit Website') }}</td>
@@ -95,8 +95,8 @@
                                     <label for="exampleFormControlInput1">Assign a User</label>
                                     <input type="text" class="form-control" id="exampleFormControlInput1" value="">
 
-                                    
-                                </div> 
+
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-light-dark" data-bs-dismiss="modal">Discard</button>
@@ -108,7 +108,7 @@
             </div>
         </div>
     </div>
-    
+
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
@@ -128,7 +128,7 @@
                 },
                 "stripeClasses": [],
                 "lengthMenu": [10, 20, 50],
-                "pageLength": 10 
+                "pageLength": 10
             });
         </script>
     </x-slot>
