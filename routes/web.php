@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 | Admin Routes
 |--------------------------------------------------------------------------
 */
+// Route::get()
 
 Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('websites')->group(function () {
