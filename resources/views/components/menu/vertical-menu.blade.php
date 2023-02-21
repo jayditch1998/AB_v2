@@ -93,8 +93,8 @@
                             <li class="{{ Request::routeIs('admin.websites')}}">
                                 <a href="{{getRouterValue();}}/admin/websites">All Websites </a>
                             </li>
-                            <li class="{{ Request::routeIs('sales') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/dashboard/sales"> Category </a>
+                            <li class="{{ Request::routeIs('admin.categories') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/admin/categories"> Category </a>
                             </li>
                         </ul>
                         <!-- <li class="menu {{ Request::routeIs('admin.websites') ? 'active' : '' }}">

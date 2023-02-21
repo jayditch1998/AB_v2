@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
+use App\Http\Controllers\Categories\CategoriesController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,12 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/create', [WebsitesController::class, 'create'])->name('website.create');
     Route::get('/delete', [WebsitesController::class, 'delete'])->name('website.delete');
     Route::post('/update', [WebsitesController::class, 'update'])->name('website.update');
+  });
+  Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])->name('categories');
+    Route::post('/create', [CategoriesController::class, 'create'])->name('categories.create');
+    Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
+    Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
   });
 });
 
