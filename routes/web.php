@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
 use App\Http\Controllers\Categories\CategoriesController;
+use App\Http\Controllers\Users\UserController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,14 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
     Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
   });
+
+  Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('users');
+    Route::post('/create', [CategoriesController::class, 'create'])->name('categories.create');
+    Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
+    Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
+  });
+
 });
 
 /*

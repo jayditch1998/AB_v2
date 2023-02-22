@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Websites\WebsitesModel;
 use App\Models\Categories\CategoriesModel;
+use App\Models\User;
 use App\Models\Users\UsersModel;
 
 class WebsitesController extends Controller
@@ -20,6 +21,7 @@ class WebsitesController extends Controller
         }catch(\Throwable $th){
             return $th->getMessage();
         }
+        
         return view('pages.admin.websites.websites', compact('data', 'categories', 'users'));
     }
 
