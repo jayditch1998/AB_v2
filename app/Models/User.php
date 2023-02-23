@@ -25,6 +25,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'name',
+        'email' ,
+        'mobile' ,
+        'role_id',
+        'user_level_id' ,
+        'status' ,
+        'license_key' ,
     ];
 
     /**
@@ -54,5 +61,26 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Userlevel::class, 'user_level_id');
+    }
+
+    public static function updateUser($data, $id)
+    {
+        try {
+            $user = self::updateOrCreate(['id' => $id], $data);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+
+    public static function deleteUser($id)
+    {
+        $data = self::find($id);
+        $data->deleted_at = date("Y-m-d H:i:s");
+        $data->save();
     }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Userlevel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -17,12 +20,14 @@ class UserController extends Controller
     {
         try{
             $users = User::all();
+            $roles = Role::all();
+            $levels = Userlevel::all();
             
         }catch(\Throwable $th){
             return $th->getMessage();
         }
       
-        return view('pages.admin.users.index', compact('users'));
+        return view('pages.admin.users.index', compact('users','roles','levels'));
     }
 
     /**
@@ -75,9 +80,31 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try{
+            $data = $request->validate([
+                'id' => 'required',
+                'name' => 'required',
+                'email' => 'required',
+                'mobile' => 'required',
+                'role_id' => 
+                    'required'
+                    
+                ,
+                'user_level_id' => 
+                    'required'
+                    
+                ,
+                'status' => 'required',
+                'license_key' => 'required',
+            ]);
+            $website_credit = Userlevel::find($request->user_level_id);
+            User::updateUser(array_merge(Arr::except($data, ['id']), ['website_credit' => $website_credit->website_limit]), $request->id);
+            return redirect('admin/users'); 
+        }catch(\Throwable $th){
+            return $th->getMessage();
+        }
     }
 
     /**

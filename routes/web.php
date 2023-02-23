@@ -41,9 +41,9 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
   Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users');
-    Route::post('/create', [CategoriesController::class, 'create'])->name('categories.create');
-    Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
-    Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
+    Route::post('/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/delete', [UserController::class, 'delete'])->name('users.delete');
+    Route::post('/update', [UserController::class, 'update'])->name('users.update');
   });
 
 });

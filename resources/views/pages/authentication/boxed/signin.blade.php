@@ -52,7 +52,7 @@
                                             <div class="col-12">
                                                 <div class="mb-4">
                                                     <label class="form-label">Password</label>
-                                                    <input type="text"
+                                                    <input type="password"
                                                         class="form-control @error('password') is-invalid @enderror"
                                                         name="password" required autocomplete="current-password">
                                                     @error('password')
