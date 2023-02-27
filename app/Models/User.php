@@ -30,6 +30,8 @@ class User extends Authenticatable
         'mobile' ,
         'role_id',
         'user_level_id' ,
+        'expired_at' ,
+        'website_credit' ,
         'status' ,
         'license_key' ,
     ];
@@ -77,10 +79,20 @@ class User extends Authenticatable
         }
     }
 
+    public static function insert($data, $id=null)
+    {
+        try {
+            $user = self::updateOrCreate(['id' => $id], $data);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+
     public static function deleteUser($id)
     {
         $data = self::find($id);
-        $data->deleted_at = date("Y-m-d H:i:s");
-        $data->save();
+        $data->delete();
     }
+
+   
 }

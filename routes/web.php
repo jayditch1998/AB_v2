@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
 use App\Http\Controllers\Categories\CategoriesController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\Users\UserLevelController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -41,9 +42,16 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
   Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users');
-    Route::post('/create', [UserController::class, 'create'])->name('users.create');
-    Route::get('/delete', [UserController::class, 'delete'])->name('users.delete');
+    Route::post('/store', [UserController::class, 'store'])->name('users.store');
+    Route::get('/destroy', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/update', [UserController::class, 'update'])->name('users.update');
+  });
+
+  Route::prefix('user-levels')->group(function () {
+    Route::get('/', [UserLevelController::class, 'index'])->name('user-levels');
+    Route::post('/store', [UserLevelController::class, 'store'])->name('user-levels.store');
+    Route::get('/destroy', [UserLevelController::class, 'destroy'])->name('user-levels.destroy');
+    Route::post('/update', [UserLevelController::class, 'update'])->name('user-levels.update');
   });
 
 });

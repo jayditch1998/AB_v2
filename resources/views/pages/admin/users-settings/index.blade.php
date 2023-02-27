@@ -55,30 +55,27 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Level</th>
-                  <th>Role</th>
-                  <th>License Key</th>
+                  <th>User Level</th>
+                  <th>Website Limit</th>
+                  <th>Business Limit</th>
+                  <th>Approval Hours</th>
+                  <th>Approval Limit</th>
                   <th class="no-content">Action</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($users as $user)
+                @foreach ($levels as $level)
                   <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ str($user->name)->title }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td><span
-                        class="{{ $user->status == 'Active' ? 'alert alert-success p-1 rounded-lg' : 'alert alert-danger p-1 rounded-lg' }}">{{ str($user->status)->title }}</span>
+                    <td>{{ $level->id }}</td>
+                    <td>{{ $level->name }}</td>
+                    <td>{{ $level->website_limit }}</td>
+                    <td>{{ $level->business_limit }}</td>
                     </td>
-                    <td>{{ str($user->level->name)->title }}</td>
-                    <td>{{ str($user->role->name)->title }}</td>
-                    <td>{{ str(Str::of($user->license_key)->substr(8, 50))->title }}...</td>
+                    <td>{{ $level->approval_hours }}</td>
+                    <td>{{ $level->approval_limit }}</td>
                     <td>
                       <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1"
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -89,28 +86,27 @@
                           </svg>
                         </a>
 
-                        <div class="dropdown-menu"  aria-labelledby="dropdownMenuLink1">
+                        <div class="dropdown-menu" data-popper-placement="bottom-end" aria-labelledby="dropdownMenuLink2">
                           <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
-                          <a data-bs-toggle="modal" class="dropdown-item view-details" data-bs-target="#editModal" href="#"
-                            data-user_id="{{ $user->id }}" data-name="{{ $user->name }}"
-                            data-email="{{ $user->email }}" data-mobile="{{ $user->mobile }}"
-                            data-role_id="{{ $user->role_id }}" data-level_id="{{ $user->user_level_id }}"
-                            data-status="{{ $user->status }}" data-license_key="{{ $user->license_key }}"
+                          <a data-bs-toggle="modal" class="dropdown-item view-details" data-bs-target="#editModal"
+                            href="#" data-level_id="{{ $level->id }}" data-name="{{ $level->name }}"
+                            data-website_limit="{{ $level->website_limit }}"
+                            data-business_limit="{{ $level->business_limit }}"
+                            data-approval_hours="{{ $level->approval_hours }}"
+                            data-approval_limit="{{ $level->approval_limit }}"
                             onclick='editModal(
-                                    {{ $user->id }},
-                                    "{{ $user->name }}",
-                                    "{{ $user->email }}",
-                                    "{{ $user->mobile }}",
-                                    {{ $user->role_id }},
-                                    {{ $user->user_level_id }},
-                                    "{{ $user->status }}",
-                                    "{{ $user->license_key }}"
-                                    )'>
+                                    {{ $level->id }},
+                                    "{{ $level->name }}",
+                                    {{ $level->website_limit }},
+                                    {{ $level->business_limit }},
+                                    {{ $level->approval_hours }},
+                                    {{ $level->approval_limit }}
+                                    );'>
                             Edit
 
                           </a>
                           {{-- <a class="text-danger delete-shortcode-btn" href="" data-target="#delete"><i class="fas fa-trash-alt"></i></a> --}}
-                          <a class="dropdown-item" href="/admin/users/destroy?id={{$user->id}}">Delete</a>
+                          <a class="dropdown-item" href="/admin/user-levels/destroy?id={{ $level->id }}">Delete</a>
                         </div>
                       </div>
 
@@ -142,54 +138,26 @@
                   <div class="modal-body">
                     <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                    <form method="post" action='/admin/users/store'>
+                    <form method="post" action='/admin/user-levels/store'>
                       @csrf
                       <div class="form-group">
-                        <label for="exampleFormControlInput1">Name</label>
+
+                        <label for="exampleFormControlInput1">Level Name</label>
                         <input required type="text" name="name" class="form-control"
                           id="exampleFormControlInput1" value="">
-                        <label for="exampleFormControlInput1">Email Address</label>
-                        <input required type="email" name="email" class="form-control"
+                        <label for="exampleFormControlInput1">Website Limit</label>
+                        <input required type="text" name="website_limit" class="form-control"
                           id="exampleFormControlInput1" value="">
-                        <label for="exampleFormControlInput1">Mobile #</label>
-                        <input required type="text" name="mobile" class="form-control"
+                        <label for="exampleFormControlInput1">Business Limit</label>
+                        <input required type="text" name="business_limit" class="form-control"
+                          id="exampleFormControlInput1" value="">
+                        <label for="exampleFormControlInput1">Approval Hours</label>
+                        <input required type="text" name="approval_hours" class="form-control"
+                          id="exampleFormControlInput1" value="">
+                        <label for="exampleFormControlInput1">Approval Limit</label>
+                        <input required type="text" name="approval_limit" class="form-control"
                           id="exampleFormControlInput1" value="">
 
-                        <label for="exampleFormControlInput2">Role</label>
-                        <!-- <input required type="text" name="website_category" class="form-control" id="exampleFormControlInput2" value=""> -->
-                        <select id="exampleFormControlInput2" class="form-control" name="role_id">
-                          <option value="all" selected>Select Role</option>
-                          @foreach ($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                          @endforeach
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-
-                        <label for="exampleFormControlInput5">Level</label>
-                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
-                        <select id="exampleFormControlInput5" class="form-control" name="user_level_id">
-                          <option value="all" selected>Select Level</option>
-                          @foreach ($levels as $level)
-                            <option value="{{ $level->id }}">{{ $level->name }}</option>
-                          @endforeach
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-                        <label for="exampleFormControlInput4">Status</label>
-                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
-                        <select id="exampleFormControlInput4" class="form-control" name="status">
-                          <option value="">Select Status</option>
-                          <option value="Active">Active</option>
-                          <option value="Pending">Pending</option>
-
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-
-                        <label for="exampleFormControlInput1">Password</label>
-                        <input required type="password" name="password" class="form-control"
-                          id="exampleFormControlInput1" value="">
-                        <label for="password_confirmation">Confirm Password</label>
-                        <input required type="password_confirmation" name="password_confirmation"
-                          class="form-control" id="exampleFormControlInput1" value="">
 
                       </div>
                   </div>
@@ -221,52 +189,26 @@
                   <div class="modal-body">
                     <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                    <form method="post" action='/admin/users/update'>
+                    <form method="post" action='/admin/user-levels/update'>
                       @csrf
-                      <input type="hidden" id="user_id" name="id">
+                      <input type="hidden" id="level_id" name="id">
                       <div class="form-group">
-                        <label for="name">Name</label>
-                        <input required type="text" name="name" class="form-control" id="name"
-                          value="">
-                        <label for="email">Email Address</label>
-                        <input required type="email" name="email" class="form-control" id="email"
-                          value="">
-                        <label for="mobile">Mobile #</label>
-                        <input required type="text" name="mobile" class="form-control" id="mobile"
-                          value="">
+                        <label for="name">Level Name</label>
+                        <input required type="text" name="name" class="form-control"
+                          id="name" value="">
+                        <label for="website_limit">Website Limit</label>
+                        <input required type="text" name="website_limit" class="form-control"
+                          id="website_limit" value="">
+                        <label for="business_limit">Business Limit</label>
+                        <input required type="text" name="business_limit" class="form-control"
+                          id="business_limit" value="">
+                        <label for="approval_hours">Approval Hours</label>
+                        <input required type="text" name="approval_hours" class="form-control"
+                          id="approval_hours" value="">
+                        <label for="approval_limit">Approval Limit</label>
+                        <input required type="text" name="approval_limit" class="form-control"
+                          id="approval_limit" value="">
 
-                        <label for="role_id">Role</label>
-                        <!-- <input required type="text" name="website_category" class="form-control" id="exampleFormControlInput2" value=""> -->
-                        <select id="role_id" class="form-control" name="role_id">
-                          <option value="all" selected>Select Role</option>
-                          @foreach ($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                          @endforeach
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-
-                        <label for="user_level_id">Level</label>
-                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
-                        <select id="user_level_id" class="form-control" name="user_level_id">
-                          <option value="all" selected>Select Level</option>
-                          @foreach ($levels as $level)
-                            <option value="{{ $level->id }}">{{ $level->name }}</option>
-                          @endforeach
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-                        <label for="status">Status</label>
-                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
-                        <select id="status" class="form-control" name="status">
-                          <option value="">Select Status</option>
-                          <option value="Active">Active</option>
-                          <option value="Pending">Pending</option>
-
-                          <!-- <option>lkfdsjlkfds</option> -->
-                        </select>
-                        <label for="license_key">License Key</label>
-                        <textarea rows="5" id="license_key" type="text"
-                          class="form-control @error('license_key') is-invalid @enderror" name="license_key" autocomplete="license_key"
-                          autofocus></textarea>
 
                       </div>
                   </div>
@@ -314,15 +256,13 @@
             "aaSorting": []
           });
 
-          function editModal(id, name, email, mobile, role_id, user_level_id, status, license_key) {
+          function editModal(id, name, website_limit, business_limit, approval_hours, approval_limit) {
             document.getElementById("name").value = name;
-            document.getElementById("email").value = email;
-            document.getElementById("mobile").value = mobile;
-            document.getElementById("role_id").value = role_id;
-            document.getElementById("user_level_id").value = user_level_id;
-            document.getElementById("status").value = status;
-            document.getElementById("license_key").value = license_key;
-            document.getElementById("user_id").value = id;
+            document.getElementById("website_limit").value = website_limit;
+            document.getElementById("business_limit").value = business_limit;
+            document.getElementById("approval_hours").value = approval_hours;
+            document.getElementById("approval_limit").value = approval_limit;
+            document.getElementById("level_id").value = id;
           }
         </script>
         </x-slot>
