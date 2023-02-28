@@ -37,6 +37,12 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
     Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
   });
+  Route::prefix('form-generator')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])->name('form-generator');
+    Route::post('/create', [CategoriesController::class, 'create'])->name('form-generator.create');
+    Route::get('/delete', [CategoriesController::class, 'delete'])->name('form-generator.destroy');
+    Route::post('/update', [CategoriesController::class, 'update'])->name('form-generator.update');
+  });
 });
 
 /*
