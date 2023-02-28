@@ -46,7 +46,7 @@
                 @endif
                 <div class="shadow-bottom"></div>
                 <ul class="list-unstyled menu-categories" id="accordionExample">
-                    <li class="menu {{ Request::is('*/dashboard/*') ? "active" : "" }}">
+                    <!-- <li class="menu {{ Request::is('*/dashboard/*') ? "active" : "" }}">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/dashboard/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -64,20 +64,11 @@
                                 <a href="{{getRouterValue();}}/dashboard/sales"> Sales </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
-                    <li class="menu menu-heading">
+                    <!-- <li class="menu menu-heading">
                         <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>APPLICATIONS</span></div>
-                    </li>
-
-                    <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
-                        <a href="{{getRouterValue();}}/app/calendar" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                <span>Calendar</span>
-                            </div>
-                        </a>
-                    </li>
+                    </li> -->
 
                     <li class="menu {{ Request::is('*/admin.websites/*') ? "active" : "" }}">
                         <a href="#Websites" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/admin.websites/*') ? "true" : "false" }}" class="dropdown-toggle">
@@ -97,14 +88,24 @@
                                 <a href="{{getRouterValue();}}/admin/categories"> Category </a>
                             </li>
                         </ul>
-                        <!-- <li class="menu {{ Request::routeIs('admin.websites') ? 'active' : '' }}">
-                            <a href="{{getRouterValue();}}/admin/websites" aria-expanded="false" class="dropdown-toggle">
-                                <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                                    <span>Websites</span>
-                                </div>
-                            </a>
-                        </li> -->
+                    </li>
+
+                    <li class="menu {{ Request::routeIs('admin.businesses') ? 'active' : '' }}">
+                        <a href="{{getRouterValue();}}/admin/businesses" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                <span>Businesses</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
+                        <a href="{{getRouterValue();}}/app/calendar" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <span>Calendar</span>
+                            </div>
+                        </a>
                     </li>
                     
                     <li class="menu {{ Request::routeIs('chat') ? 'active' : '' }}">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
 use App\Http\Controllers\Categories\CategoriesController;
+use App\Http\Controllers\Businesses\BusinessesController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,12 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/create', [CategoriesController::class, 'create'])->name('categories.create');
     Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
     Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
+  });
+  Route::prefix('businesses')->group(function () {
+    Route::get('/', [BusinessesController::class, 'index'])->name('businesses');
+    Route::post('/create', [BusinessesController::class, 'create'])->name('businesses.create');
+    Route::get('/delete', [BusinessesController::class, 'delete'])->name('businesses.delete');
+    Route::post('/update', [BusinessesController::class, 'update'])->name('businesses.update');
   });
 });
 
