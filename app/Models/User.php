@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Websites\WebsitesModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +25,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'name',
+        'email' ,
+        'mobile' ,
+        'role_id',
+        'user_level_id' ,
+        'expired_at' ,
+        'website_credit' ,
+        'status' ,
+        'license_key' ,
     ];
 
     /**
@@ -49,4 +59,40 @@ class User extends Authenticatable
     {
         return $this->hasMany(WebsitesModel::class, 'user_id');
     }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Userlevel::class, 'user_level_id');
+    }
+
+    public static function updateUser($data, $id)
+    {
+        try {
+            $user = self::updateOrCreate(['id' => $id], $data);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+
+    public static function insert($data, $id=null)
+    {
+        try {
+            $user = self::updateOrCreate(['id' => $id], $data);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+
+    public static function deleteUser($id)
+    {
+        $data = self::find($id);
+        $data->delete();
+    }
+
+   
 }

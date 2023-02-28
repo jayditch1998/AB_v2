@@ -179,8 +179,8 @@
                                     &#x1F44B;
                                 </div>
                                 <div class="media-body">
-                                    <h5>Shaun Park</h5>
-                                    <p>Project Leader</p>
+                                    <h5>{{str(auth()->user()->name)->title}}</h5>
+                                    <p>{{str(auth()->user()->role->name)->title}}</p>
                                 </div>
                             </div>
                         </div>
