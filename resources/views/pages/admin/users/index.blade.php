@@ -188,7 +188,7 @@
                         <input required type="password" name="password" class="form-control"
                           id="exampleFormControlInput1" value="">
                         <label for="password_confirmation">Confirm Password</label>
-                        <input required type="password_confirmation" name="password_confirmation"
+                        <input required type="password" name="password_confirmation"
                           class="form-control" id="exampleFormControlInput1" value="">
 
                       </div>
