@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
 use App\Http\Controllers\Categories\CategoriesController;
@@ -28,6 +29,9 @@ use Illuminate\Support\Facades\Auth;
 // Route::get()
 
 Route::name('admin.')->prefix('admin')->group(function () {
+  Route::prefix('dashboard')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+  });
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
     Route::post('/create', [WebsitesController::class, 'create'])->name('website.create');
