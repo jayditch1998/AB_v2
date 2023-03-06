@@ -39,32 +39,36 @@
 
                     <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Website Name</th>
-                            <th>Bussiness Name</th>
-                            <th>Bussiness Owner</th>
-                            <th>Bussiness Email</th>
-                            <th>Code</th>
-                            <th>Status</th>
-                            <th>URL</th>
-                            <th class="no-content">Action</th>
+                            <th style="width: 100px">User</th>
+                            <th class="w-25">Website Name</th>
+                            <th class="w-25">Bussiness Name</th>
+                            <th class="w-25">Bussiness Owner</th>
+                            <th class="w-25">Bussiness Email</th>
+                            <th class="w-25">Code</th>
+                            <th class="w-25">Status</th>
+                            <th class="w-25">URL</th>
+                            <th class="no-content col-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($businesses as $business)
                         <tr>
-                            <td>{{$business->user->name}}</td>
-                            <td>{{$business->name}}</td>
-                            <td>{{$business->category_name}}</td>
-                            <td><a target="_blank" href="{{$business->url}}">{{ __('Visit Website') }}</td>
-                            <td>
-                                @if ($business->status != 1)
-                                <span class="alert alert-danger p-1 rounded-lg">{{ __('Inactive') }}</span>
-                                @else
-                                <span class="alert alert-success p-1 rounded-lg">{{ __('Active') }}</span>
-                                @endif
-                            </td>
-                            <td>{{$business->business_count}} Businesses</td>
+                            <td class="w-25">{{$business->user_name}}</td>
+                            <td class="w-25">
+                            <a 
+                                target="_blank" 
+                                href="{{$business->website_url.'?business_code='.$business->business_code}}"
+                                title="{{$business->website_url.'?business_code='.$business->business_code}}" 
+                            >{{$business->business_name}}</a></td>
+                            <td class="w-25">{{$business->business_name}}</td>
+                            <td class="w-25">{{$business->business_owner}}</td>
+                            <td class="w-25">{{$business->business_email}}</td>
+                            <td class="w-25">{{$business->business_code}}</td>
+                            <td class="w-25">{{$business->status}}</td>
+                            <td class="w-25"><a 
+                                                title="{{$business->website_url.'?business_code='.$business->business_code}}" 
+                                                target="_blank" href="{{$business->website_url.'?business_code='.$business->business_code}}">{{ substr($business->website_url.'?business_code='.$business->business_code, 0, 20)}}
+                                                ...</a></td>
                             <td class="text-center">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -84,14 +88,16 @@
                                                 data-url="{{$business->url}}"
                                                 data-websites_categories="{{$categories}}"
                                                 onclick='editModal(
-                                                    {{$business->id}},
-                                                    "{{$business->name}}",
-                                                    {{$business->category_id}},
-                                                    "{{$business->category_name}}",
-                                                    "{{$business->url}}",
-                                                    {{$business->user_id}},
-                                                    "{{$business->user->name}}"
-                                                    )'
+                                                <?php
+                                                    // {{$business->id}},
+                                                    // "{{$business->name}}",
+                                                    // {{$business->category_id}},
+                                                    // "{{$business->category_name}}",
+                                                    // "{{$business->url}}",
+                                                    // {{$business->user_id}},
+                                                    // "{{$business->user->name}}"
+                                                    // )'
+                                                    ?>
                                             >Edit</a>
                                             <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
                                             <a class="dropdown-item" href="/admin/websites/delete?id={{$business->id}}">Delete</a>
@@ -105,10 +111,10 @@
 
                 <!-- Create Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Website</h5>
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Business</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
                                 </button>
@@ -116,24 +122,9 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/websites/create'>
+                                <form method="post" action='/admin/businesses/create' enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label for="exampleFormControlInput1">Website Name</label>
-                                        <input required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
-
-                                        <label for="exampleFormControlInput2">Website Category</label>
-                                        <!-- <input required type="text" name="website_category" class="form-control" id="exampleFormControlInput2" value=""> -->
-                                        <select id="category" class="form-control" name="category_id">
-                                            <option value="all" selected>Select Category</option>
-                                            @foreach($categories as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
-                                            <!-- <option>lkfdsjlkfds</option> -->
-                                        </select>
-                                        <label for="exampleFormControlInput3">Website url</label>
-                                        <input required type="text" name="url" class="form-control" id="exampleFormControlInput3" value="">
-
                                         <label for="exampleFormControlInput4">Assign a User</label>
                                         <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
                                         <select id="website_user" class="form-control" name="user_id">
@@ -143,6 +134,85 @@
                                             @endforeach
                                             <!-- <option>lkfdsjlkfds</option> -->
                                         </select>
+
+                                        <label for="exampleFormControlInput4">Select Websites</label>
+                                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
+                                        <select id="website_user" class="form-control" name="website_id">
+                                            <option value="all" selected>Select Website</option>
+                                            @foreach($websites as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                            <!-- <option>lkfdsjlkfds</option> -->
+                                        </select>
+
+                                        <label for="exampleFormControlInput1">Business Name</label>
+                                        <input required type="text" name="business_name" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Owner</label>
+                                        <input required type="text" name="business_owner" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Email</label>
+                                        <input required type="text" name="business_email" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Phone</label>
+                                        <input required type="text" name="business_phone" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Address</label>
+                                        <input required type="text" name="business_address" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business City</label>
+                                        <input required type="text" name="business_city" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Logo</label>
+                                        <input required type="file" accept="image/png, image/jpeg, image/gif" name="business_logo" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Price 1</label>
+                                        <input required type="text" name="price_1" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Price 2</label>
+                                        <input required type="text" name="price_2" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Review 1</label>
+                                        <input required type="text" name="review1" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <h5>Business Hours</h5>
+                                        <label for="exampleFormControlInput1">Monday</label>
+                                        <input required type="text" name="monday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Tuesday</label>
+                                        <input required type="text" name="tuesday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Wednesday</label>
+                                        <input required type="text" name="wednesday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Thursday</label>
+                                        <input required type="text" name="thursday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Friday</label>
+                                        <input required type="text" name="friday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Saturday</label>
+                                        <input required type="text" name="saturday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Sunday</label>
+                                        <input required type="text" name="sunday" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <h5>Social Media</h5>
+                                        <label for="exampleFormControlInput1">Facebook</label>
+                                        <input required type="text" name="facebook" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Twitter</label>
+                                        <input required type="text" name="twitter" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <h5>Images</h5>
+                                        <label for="exampleFormControlInput1">Image 1</label>
+                                        <input required type="file" name="image1" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Image 2</label>
+                                        <input required type="file" name="image2" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Image 3</label>
+                                        <input required type="file" name="image3" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value="">
 
                                     </div>
                                 </div>

@@ -45,10 +45,30 @@ class BusinessesModel extends Model
     ];
 
     public static function getAllBusinesses(){
-        return self::get();
+        $select = [
+            'businesses.id',
+            'users.id as user_id',
+            'websites.id as website_id',
+            'businesses.business_name',
+            'businesses.business_owner',
+            'businesses.business_email',
+            'businesses.business_code',
+            'businesses.status',
+            'websites.url as website_url',
+            'users.name as user_name',
+            'websites.name as website_name',
+        ];
+        return self::select($select)
+        ->join('websites', 'websites.id', '=', 'businesses.website_id')
+        ->join('users', 'users.id', '=', 'websites.user_id')
+        ->get();
     }
     public function website()
     {
         return $this->belongsTo(WebsitesModel::class);
+    }
+
+    public static function insert($data, $id=null){
+        self::updateOrCreate(['id'=>$id], $data);
     }
 }
