@@ -88,16 +88,34 @@
                                                 data-url="{{$business->url}}"
                                                 data-websites_categories="{{$categories}}"
                                                 onclick='editModal(
-                                                <?php
-                                                    // {{$business->id}},
-                                                    // "{{$business->name}}",
-                                                    // {{$business->category_id}},
-                                                    // "{{$business->category_name}}",
-                                                    // "{{$business->url}}",
-                                                    // {{$business->user_id}},
-                                                    // "{{$business->user->name}}"
-                                                    // )'
-                                                    ?>
+                                                    {{$business->id}},
+                                                    {{$business->user_id}},
+                                                    {{$business->website_id}},
+                                                    "{{$business->user_name}}",
+                                                    "{{$business->website_name}}",
+                                                    "{{$business->business_name}}",
+                                                    "{{$business->business_owner}}",
+                                                    "{{$business->business_email}}",
+                                                    "{{$business->business_phone}}",
+                                                    "{{$business->business_address}}",
+                                                    "{{$business->business_city}}",
+                                                    "{{$business->business_logo}}",
+                                                    "{{$business->price_1}}",
+                                                    "{{$business->price_2}}",
+                                                    "{{$business->review1}}",
+                                                    "{{$business->monday}}",
+                                                    "{{$business->tuesday}}",
+                                                    "{{$business->wednesday}}",
+                                                    "{{$business->thursday}}",
+                                                    "{{$business->friday}}",
+                                                    "{{$business->saturday}}",
+                                                    "{{$business->sunday}}",
+                                                    "{{$business->facebook}}",
+                                                    "{{$business->twitter}}",
+                                                    "{{$business->image1}}",
+                                                    "{{$business->image2}}",
+                                                    "{{$business->image3}}"
+                                                    )'
                                             >Edit</a>
                                             <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
                                             <a class="dropdown-item" href="/admin/websites/delete?id={{$business->id}}">Delete</a>
@@ -240,29 +258,96 @@
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
                                 <form method="post" action='/admin/websites/update'>
                                     @csrf
-                                    <input type="hidden" id="website_id" name="id">
+                                    <input type="hidden" id="id" name="id">
                                     <div class="form-group">
-                                        <label for="exampleFormControlInput1">Website Name</label>
-                                        <input id="name" required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
-
-                                        <label for="exampleFormControlInput2">Website Category</label>
-                                        <select  class="form-control" name="category_id">
-                                            <option id="category_id" value="all" selected>Select Category</option>
-                                            @foreach($categories as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="exampleFormControlInput3">Website url</label>
-                                        <input id="url" required type="text" name="url" class="form-control" id="exampleFormControlInput3" value="">
-
-                                        <label for="exampleFormControlInput4">Assign a User</label>
+                                    <label for="exampleFormControlInput4">Assign a User</label>
                                         <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
                                         <select class="form-control" name="user_id">
                                             <option id="user_id" value="all" selected>Select User</option>
                                             @foreach($users as $item) 
                                             <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
                                             @endforeach
+                                            <!-- <option>lkfdsjlkfds</option> -->
                                         </select>
+
+                                        <label for="exampleFormControlInput4">Select Websites</label>
+                                        <!-- <input required type="text" name="website_user" class="form-control" id="exampleFormControlInput4" value=""> -->
+                                        <select class="form-control" name="website_id">
+                                            <option id="website_id" value="all" selected>Select Website</option>
+                                            @foreach($websites as $item) 
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                            <!-- <option>lkfdsjlkfds</option> -->
+                                        </select>
+
+                                        <label for="exampleFormControlInput1">Business Name</label>
+                                        <input required id="business_name" type="text" name="business_name" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Owner</label>
+                                        <input required id="business_owner" type="text" name="business_owner" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Email</label>
+                                        <input required id="business_email" type="text" name="business_email" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Phone</label>
+                                        <input required id="business_phone" type="text" name="business_phone" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business Address</label>
+                                        <input required id="business_address" type="text" name="business_address" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Business City</label>
+                                        <input required id="business_city" type="text" name="business_city" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <!-- <label for="exampleFormControlInput1">Business Logo</label>
+                                        <input required id="business_logo" type="file" accept="image/png, image/jpeg, image/gif" name="business_logo" class="form-control" id="exampleFormControlInput1" value=""> -->
+                                        
+                                        <label for="exampleFormControlInput1">Price 1</label>
+                                        <input required id="price_1" type="text" name="price_1" class="form-control" id="exampleFormControlInput1" value="">
+                                        
+                                        <label for="exampleFormControlInput1">Price 2</label>
+                                        <input required id="price_2" type="text" name="price_2" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Review 1</label>
+                                        <input required id="review1" type="text" name="review1" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <h5>Business Hours</h5>
+                                        <label for="exampleFormControlInput1">Monday</label>
+                                        <input required id="monday" type="text" name="monday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Tuesday</label>
+                                        <input required id="tuesday" type="text" name="tuesday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Wednesday</label>
+                                        <input required id="wednesday" type="text" name="wednesday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Thursday</label>
+                                        <input required id="thursday" type="text" name="thursday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Friday</label>
+                                        <input required id="friday" type="text" name="friday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Saturday</label>
+                                        <input required id="saturday" type="text" name="saturday" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Sunday</label>
+                                        <input required id="sunday" type="text" name="sunday" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <h5>Social Media</h5>
+                                        <label for="exampleFormControlInput1">Facebook</label>
+                                        <input required id="facebook" type="text" name="facebook" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Twitter</label>
+                                        <input required id="twitter" type="text" name="twitter" class="form-control" id="exampleFormControlInput1" value="">
+                                        <hr>
+                                        <!-- <h5>Images</h5>
+                                        <label for="exampleFormControlInput1">Image 1</label>
+                                        <input required id="image1" type="file" name="image1" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Image 2</label>
+                                        <input required id="image2" type="file" name="image2" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value="">
+
+                                        <label for="exampleFormControlInput1">Image 3</label>
+                                        <input required id="image3" type="file" name="image3" accept="image/png, image/jpeg, image/gif" class="form-control" id="exampleFormControlInput1" value=""> -->
 
                                     </div>
                                 </div>
@@ -301,16 +386,70 @@
                 "aaSorting": []
             });
 
-            function editModal(id, name, category_id, category_name, url, user_id, user_name) {
-                document.getElementById("name").value = name;
-                const cat = document.getElementById("category_id");
-                cat.value = category_id;
-                cat.text = category_name;
-                document.getElementById("url").value = url;
-                const owner =document.getElementById("user_id");
-                owner.value = user_id;
-                owner.text = user_name;
-                document.getElementById("website_id").value = id;
+            function editModal(
+                        id,
+                        user_id,
+                        website_id,
+                        user_name,
+                        website_name,
+                        business_name,
+                        business_owner,
+                        business_email,
+                        business_phone,
+                        business_address,
+                        business_city,
+                        business_logo,
+                        price_1,
+                        price_2,
+                        review1,
+                        monday,
+                        tuesday,
+                        wednesday,
+                        thursday,
+                        friday,
+                        saturday,
+                        sunday,
+                        facebook,
+                        twitter,
+                        image1,
+                        image2,
+                        image3
+                    ) {
+                document.getElementById("id").value = id;
+                // document.getElementById("user_id").value = user_id;
+                const user = document.getElementById("user_id");
+                user.value = user_id;
+                user.text = user_name;
+
+                const web = document.getElementById("website_id");
+                web.value = website_id;
+                web.text = website_name;
+
+                // document.getElementById("name").value = name;
+                // document.getElementById("url").value = url;
+
+                document.getElementById("business_name").value = business_name;
+                document.getElementById("business_owner").value = business_owner;
+                document.getElementById("business_email").value = business_email;
+                document.getElementById("business_phone").value = business_phone;
+                document.getElementById("business_address").value = business_address;
+                document.getElementById("business_city").value = business_city;
+                // document.getElementById("business_logo").value = business_logo;
+                document.getElementById("price_1").value = price_1;
+                document.getElementById("price_2").value = price_2;
+                document.getElementById("review1").value = review1;
+                document.getElementById("monday").value = monday;
+                document.getElementById("tuesday").value = tuesday;
+                document.getElementById("wednesday").value = wednesday;
+                document.getElementById("thursday").value = thursday;
+                document.getElementById("friday").value = friday;
+                document.getElementById("saturday").value = saturday;
+                document.getElementById("sunday").value = sunday;
+                document.getElementById("facebook").value = facebook;
+                document.getElementById("twitter").value = twitter;
+                // document.getElementById("image1").value = image1;
+                // document.getElementById("image2").value = image2;
+                // document.getElementById("image3").value = image3;
             }
         </script>
     </x-slot>
