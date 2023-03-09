@@ -140,7 +140,7 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/businesses/create' enctype="multipart/form-data">
+                                <form method="post" action='/admin/businesses/update' enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label for="exampleFormControlInput4">Assign a User</label>
@@ -256,7 +256,7 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/websites/update'>
+                                <form method="post" action='/admin/businesses/update'>
                                     @csrf
                                     <input type="hidden" id="id" name="id">
                                     <div class="form-group">
