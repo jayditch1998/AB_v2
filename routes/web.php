@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::post('/update', [AdminController::class, 'update'])->name('dashboard.update');
   });
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
