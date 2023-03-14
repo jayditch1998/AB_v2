@@ -345,7 +345,7 @@ window.addEventListener("load", function(){
                     vertical: 0
                 }
             },
-            series: [44, 55, 41, 17],
+            series: [44, 55, 41, 67],
             responsive: [{
                 breakpoint: 480,
                 options: {
@@ -736,7 +736,49 @@ window.addEventListener("load", function(){
                     vertical: 0
                 }
             },
-            series: [44, 55, 41, 17],
+            series: [44, 55, 41, 30],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        }
+
+        // Agency BuilderChar
+
+
+        var ABChart = {
+            chart: {
+                fontFamily: 'Nunito, Arial, sans-serif',
+                height: 350,
+                type: 'donut',
+                toolbar: {
+                show: false,
+                }
+            },
+            stroke: {
+            colors: '#e0e6ed'
+            },
+            legend: {
+                markers: {
+                    width: 10,
+                    height: 10,
+                    offsetX: -5,
+                    offsetY: 0
+                },
+                itemMargin: {
+                    horizontal: 10,
+                    vertical: 0
+                }
+            },
+            series: [all_website, all_active_website, all_inactive_website, all_business, all_active_business, all_inactive_business],
+            labels: ['All Website', 'All Active Website', 'All Inactive Website', 'All Business', 'All Active Business', 'All Inactive Business'],
             responsive: [{
                 breakpoint: 480,
                 options: {
@@ -855,6 +897,12 @@ window.addEventListener("load", function(){
 
     donut.render();
 
+    var ABCharts = new ApexCharts(
+        document.querySelector("#AB-chart"),
+        ABChart
+    );
+        ABCharts.render();
+    
 
     // Radial Chart
     var radialChart = new ApexCharts(
