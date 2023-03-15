@@ -47,7 +47,7 @@
                                 @elseif($item == 'name')
                                     <th>{{ __('Business Name') }}</th>
                                 @elseif($item == 'business_email')
-                                    <th class="hide-in-mobile">{{ __('Business Email') }}</th>
+                                    <th>{{ __('Business Email') }}</th>
                                 @else
                                     <th>{{ucwords(str_replace('_', ' ', $item))}}</th>
                                 @endif
@@ -59,11 +59,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($businesses as $item)
+                    @foreach($businesses as $business)
+                    
                         <tr>
                             <td>{{$business->created_at->format('M d, Y')}}</td>
                             <td>{{$business->website->user['name']}}</td>
-                            <td>{{$category->user->name}}</td>
+                            @foreach($shortcodeInColumn as $key => $item)
+
+                            @if($item == 'website_id')
+                            <td ><a href="{{$business->website['url'].'?business_code='.$business->business_code}}">{{$business->Website['name']}}</a></td>
+
+                            @elseif ($item == 'business_email')
+                            <td>{{$business[$item]}}</td>
+                            @else
+                                @if($item == 'status')
+                                    <td><span class="{{$business[$item] == 'approved' ? 'alert alert-success p-1 rounded-lg' : 'alert alert-danger p-1 rounded-lg'}}">{{$business[$item]}}</span></td>
+                                @else
+                                    <td>{{$business[$item]}}</td>
+                                @endif
+
+                            @endif
+
+                            @endforeach
+                        <td><a
+                            title="{{$business->website['url'].'?business_code='.$business->business_code}}"
+                            target="_blank" href="{{$business->website['url'].'?business_code='.$business->business_code}}">{{ substr($business->website['url'].'?business_code='.$business->business_code, 0, 20)}}
+                            ...</a>
+                        </td>
                             <td class="text-center">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -78,11 +100,8 @@
                                                 data-bs-target="#editModal" 
                                                 href="#"
                                                 onclick='editModal(
-                                                    {{$category->id}},
-                                                    "{{$category->name}}",
-                                                    "{{$category->description}}",
-                                                    {{$category->user_id}},
-                                                    "{{$category->user->name}}",
+                                                    {{$business->id}},
+               
                                                     )'
                                             >Edit</a>
                                             <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->

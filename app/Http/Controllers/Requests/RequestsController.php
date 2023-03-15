@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Shortcodes\ShortcodesModel;
 use App\Models\Websites\WebsitesModel;
 use Illuminate\Support\Facades\Schema;
-
 use App\Models\Users\UsersModel;
 
 
@@ -19,6 +18,7 @@ class RequestsController extends Controller
             $websites = WebsitesModel::all();
             $shortcodes = ShortcodesModel::where('enable', '1')->where('show_to_dashboard', '1')->orderBy('position', 'asc');
             $shortcodes = $shortcodes->pluck('business_column') ;
+            $users = UsersModel::getActiveUsers()->get();
 
             $shortcodeInColumn = ['website_id'];
             foreach ($shortcodes as $shortcode){
@@ -39,8 +39,8 @@ class RequestsController extends Controller
                 $businesses = RequestsModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->where('user_id', auth()->user()->id)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
             }
 
-
-            return view('requests.onlinerequests', compact('businesses','shortcodeInColumn'));
+            // dd($businesses, $shortcodeInColumn);
+            return view('pages.admin.requests.onlinerequests', compact('businesses','shortcodeInColumn', 'users'));
         }catch(\Throwable $th){
             dd($th->getMessage());
         }

@@ -65,10 +65,13 @@
                             <td class="w-25">{{$business->business_email}}</td>
                             <td class="w-25">{{$business->business_code}}</td>
                             <td class="w-25">{{$business->status}}</td>
-                            <td class="w-25"><a 
-                                                title="{{$business->website_url.'?business_code='.$business->business_code}}" 
-                                                target="_blank" href="{{$business->website_url.'?business_code='.$business->business_code}}">{{ substr($business->website_url.'?business_code='.$business->business_code, 0, 20)}}
-                                                ...</a></td>
+                            <td class="w-25">
+                                <a 
+                                title="{{$business->website_url.'?business_code='.$business->business_code}}" 
+                                target="_blank" href="{{$business->website_url.'?business_code='.$business->business_code}}">{{ substr($business->website_url.'?business_code='.$business->business_code, 0, 20)}}
+                                ...
+                                </a>
+                            </td>
                             <td class="text-center">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
