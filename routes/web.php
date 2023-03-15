@@ -7,6 +7,7 @@ use App\Http\Controllers\Categories\CategoriesController;
 use App\Http\Controllers\Businesses\BusinessesController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserLevelController;
+use App\Http\Controllers\Requests\RequestsController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,13 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/create', [BusinessesController::class, 'create'])->name('businesses.create');
     Route::get('/delete', [BusinessesController::class, 'delete'])->name('businesses.delete');
     Route::post('/update', [BusinessesController::class, 'update'])->name('businesses.update');
+  });
+
+  Route::prefix('online_request')->group(function () {
+    Route::get('/', [RequestsController::class, 'index'])->name('online_request');
+    Route::post('/create', [RequestsController::class, 'create'])->name('online_request.create');
+    Route::get('/delete', [RequestsController::class, 'delete'])->name('online_request.delete');
+    Route::post('/update', [RequestsController::class, 'update'])->name('online_request.update');
   });
 
   Route::prefix('users')->group(function () {

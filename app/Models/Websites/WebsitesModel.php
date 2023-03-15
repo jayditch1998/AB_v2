@@ -65,4 +65,9 @@ class WebsitesModel extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    // public function pendingOrders()
+    // {
+    //     return $this->hasMany(pendingOrders::class,'website_id');
+    // }
 }

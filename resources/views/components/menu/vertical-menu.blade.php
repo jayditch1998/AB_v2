@@ -106,6 +106,18 @@
                         </a>
                     </li>
 
+                    <li class="menu {{ Request::routeIs('admin.online_request') ? 'active' : '' }}">
+                        <a href="{{getRouterValue();}}/admin/online_request" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
+                                    <path d="M9 7.5a.5.5 0 0 1 .5-.5H15v2H9.5a.5.5 0 0 1-.5-.5v-1zm-2 3v1a.5.5 0 0 1-.5.5H1v-2h5.5a.5.5 0 0 1 .5.5z"/>
+                                </svg>
+                            <span>Requests List</span>
+                            </div>
+                        </a>
+                    </li>
+
                     <!-- <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
                         <a href="{{getRouterValue();}}/app/calendar" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
