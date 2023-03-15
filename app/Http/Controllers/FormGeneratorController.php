@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormGenerator;
+use App\Models\User;
+use App\Models\Websites\WebsitesModel;
 use Illuminate\Http\Request;
 
 class FormGeneratorController extends Controller
@@ -14,7 +16,13 @@ class FormGeneratorController extends Controller
      */
     public function index()
     {
-        //
+        
+        $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
+        if($websites){
+            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+        }else{
+            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+        }
     }
 
     /**
@@ -81,5 +89,19 @@ class FormGeneratorController extends Controller
     public function destroy(FormGenerator $formGenerator)
     {
         //
+    }
+
+    public function generate(Request $request){
+        // dd($request->all());
+        $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
+        if(isset(request()->website)){
+            $website = WebsitesModel::find($request->website);
+            $user = User::find($website->user_id);
+            $website = $website->name;
+            $LKey = $user->license_key;
+            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites,'website' => $website,'LKey' => $LKey]);
+        }else{
+            return 'generateOnlineForm Error!';
+        }
     }
 }

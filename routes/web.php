@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Websites\WebsitesController;
 use App\Http\Controllers\Categories\CategoriesController;
 use App\Http\Controllers\Businesses\BusinessesController;
+use App\Http\Controllers\FormGeneratorController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserLevelController;
 use Illuminate\Support\Facades\Auth;
@@ -67,8 +68,8 @@ Route::name('admin.')->prefix('admin')->group(function () {
   });
 
   Route::prefix('form-generator')->group(function () {
-    Route::get('/', [CategoriesController::class, 'index'])->name('form-generator');
-    Route::post('/create', [CategoriesController::class, 'create'])->name('form-generator.create');
+    Route::get('/', [FormGeneratorController::class, 'index'])->name('form-generator');
+    Route::post('/generate', [FormGeneratorController::class, 'generate'])->name('form-generator.generate');
     Route::get('/delete', [CategoriesController::class, 'delete'])->name('form-generator.destroy');
     Route::post('/update', [CategoriesController::class, 'update'])->name('form-generator.update');
   });
