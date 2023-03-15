@@ -28,9 +28,9 @@
 
     <div class="row layout-top-spacing">
 
-        <div class="col-sm-12 pb-3 d-flex justify-content-end">
+        <!-- <div class="col-sm-12 pb-3 d-flex justify-content-end">
             <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Button here</button>
-        </div>
+        </div> -->
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-8">
@@ -54,13 +54,12 @@
 
                             @endforeach
                             <th>Business URL</th>
-                            <th>Status</th>
                             <th class="no-content">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($businesses as $business)
-                    
+                        @if(isset($business->website))
                         <tr>
                             <td>{{$business->created_at->format('M d, Y')}}</td>
                             <td>{{$business->website->user['name']}}</td>
@@ -110,6 +109,7 @@
                                     </div>
                                 </td>
                             </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>

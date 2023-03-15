@@ -34,9 +34,9 @@ class RequestsController extends Controller
                 return redirect('/admin/shortcodes/create')->with('message', 'No Column Available at the Momment. Start Creating Now.');
             }
             if(auth()->user()->role_id==1){
-                $businesses = RequestsModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
+                $businesses = RequestsModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->get();
             }else{
-                $businesses = RequestsModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->where('user_id', auth()->user()->id)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
+                $businesses = RequestsModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->where('user_id', auth()->user()->id)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->get();
             }
 
             // dd($businesses, $shortcodeInColumn);
