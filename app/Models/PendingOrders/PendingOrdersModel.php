@@ -4,6 +4,7 @@ namespace App\Models\PendingOrders;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Websites\WebsitesModel;
 
 class PendingOrdersModel extends Model
 {
@@ -49,4 +50,9 @@ class PendingOrdersModel extends Model
         'messaging',
         'approved_date',
     ];
+
+    public function website()
+    {
+        return $this->belongsTo(WebsitesModel::class,'website_id');
+    }
 }

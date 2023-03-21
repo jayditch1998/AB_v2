@@ -28,9 +28,11 @@
 
     <div class="row layout-top-spacing">
 
-        <!-- <div class="col-sm-12 pb-3 d-flex justify-content-end">
-            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Button here</button>
-        </div> -->
+        <div class="col-sm-12 pb-3 d-flex justify-content-end">
+            <!-- <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Approve all</button> -->
+            <button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#approve_all_modal">Approve All</button>
+            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#decline_all_modal">Decline All</button>
+        </div>
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-8">
@@ -93,18 +95,8 @@
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                                             <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
-                                            <a 
-                                                class="dropdown-item view-details" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editModal" 
-                                                href="#"
-                                                onclick='editModal(
-                                                    {{$business->id}},
-               
-                                                    )'
-                                            >Edit</a>
-                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
-                                            <!-- <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a> -->
+                                            <a class="dropdown-item" href="/admin/online_request/approve?id={{$business->id}}">Approve</a>
+                                            <a class="dropdown-item" href="/admin/online_request/decline?id={{$business->id}}">Decline</a>
                                         </div>
                                     </div>
                                 </td>
@@ -114,45 +106,6 @@
                     </tbody>
                 </table>
 
-                <!-- Create Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Website</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
-                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/categories/create'>
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Category Name</label>
-                                        <input required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
-                                        
-                                        <label for="exampleFormControlInput3">Description</label>
-                                        <textarea required name="description" class="form-control" id="exampleFormControlInput3" cols="10" rows="5"></textarea>
-                                        
-                                        <label for="exampleFormControlInput4">User</label>
-                                        <select class="form-control" name="user_id">
-                                            <option value="all" selected>Select User</option>
-                                            @foreach($users as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-light-dark" data-bs-dismiss="modal">Discard</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Edit Modal -->
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -195,6 +148,59 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Approve All Modal -->
+                <div class="modal fade" id="approve_all_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!-- <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure to approve all requests ?</h5> -->
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
+                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
+                                <form method="post" action='/admin/online_request/approve/all/requests'>
+                                    @csrf              
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure to approve all requests ?</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-light-dark" data-bs-dismiss="modal">No</a>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decline All Modal -->
+                <div class="modal fade" id="decline_all_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!-- <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure to approve all requests ?</h5> -->
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
+                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
+                                <form method="post" action='/admin/online_request/decline/all/requests'>
+                                    @csrf              
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure to Decline all requests ?</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-light-dark" data-bs-dismiss="modal">No</a>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
