@@ -8,6 +8,7 @@ use App\Http\Controllers\Businesses\BusinessesController;
 use App\Http\Controllers\FormGeneratorController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserLevelController;
+use App\Http\Controllers\FormFieldOption\FormFieldOptionController;
 use App\Http\Controllers\Requests\RequestsController;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -72,6 +73,13 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/destroy', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/update', [UserController::class, 'update'])->name('users.update');
+  });
+
+  Route::prefix('user-field-options')->group(function () {
+    Route::get('/', [FormFieldOptionController::class, 'index'])->name('ufo');
+    Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
+    Route::get('/destroy', [FormFieldOptionController::class, 'destroy'])->name('ufo.destroy');
+    Route::post('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
   });
 
   Route::prefix('user-levels')->group(function () {
