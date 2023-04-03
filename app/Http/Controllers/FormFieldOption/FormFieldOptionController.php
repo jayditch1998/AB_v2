@@ -46,6 +46,7 @@ class FormFieldOptionController extends Controller
             $activated_fields['data'] = $toArray;
         }
         $activated_fields['license_key'] = $data[0]->license_key;
+        $LK = $activated_fields['license_key'] ;
         // return response()->json($activated_fields);
         
         $html = '';
@@ -72,6 +73,7 @@ class FormFieldOptionController extends Controller
                             :
                                 '<a 
                                 href="#"
+                                onclick="updateStatus('."'$LK'".', '."'$key'".')"
                                 class="text-success delete-website-btn"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -80,7 +82,7 @@ class FormFieldOptionController extends Controller
                                 </svg>
                             </a>').'
                             </div>  
-                        </td>   
+                        </td>  
                ';
         }
         $response['html'] = $html;
@@ -90,7 +92,8 @@ class FormFieldOptionController extends Controller
         // return view('pages.admin.formfieldoptions.edit_options', ['activated_fields' => $activated_fields]);
     }
 
-    public function activateField($formKey, $LKey){
+    public function update($formKey){
+        dd($formKey);
         try{
             $data = FormFieldOptionModel::where('license_key', $LKey)->first();
             $data->$formKey = 1;

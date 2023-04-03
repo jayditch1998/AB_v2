@@ -106,12 +106,27 @@
                         // Add employee details
                         console.log(response);
                         $('#ufo tbody').html(response.html);
-
-                        // Display Modal
-                        // $('#empModal').modal('show'); 
                     }
                 });
                 }
+            }
+
+            function updateStatus(lKey, key = null) {
+                // AJAX request
+                var url = "{{ url('admin/user-field-options/update?lKey=:lKey') }}";
+                url = url.replace(':lKey',lKey);
+                // url = url.replace(':key',key);
+                console.log(url);
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    success: function(response){
+                        // Add employee details
+                        console.log(response);
+                        // $('#ufo tbody').html(response.html);
+                    }
+                });
+
             }
         </script>
     </x-slot>

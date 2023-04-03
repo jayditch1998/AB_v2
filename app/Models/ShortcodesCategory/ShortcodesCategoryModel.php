@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ShortcodesCategoryModel extends Model
 {
     use HasFactory;
-    protected $table = 'shortcodes_categories';
+    protected $table = 'shortcode_categories';
+
+    public function shortcodes(){
+        return $this->hasMany('App\Shortcodes\ShortcodesModel');
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Users\UserLevelController;
 use App\Http\Controllers\FormFieldOption\FormFieldOptionController;
 use App\Http\Controllers\Requests\RequestsController;
+use App\Http\Controllers\Shortcodes\ShortcodesController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,23 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/update', [BusinessesController::class, 'update'])->name('businesses.update');
   });
 
+  Route::prefix('shortcodes')->group(function () {
+    Route::get('/', [ShortcodesController::class, 'index'])->name('shortcodes');
+    Route::post('/create', [ShortcodesController::class, 'create'])->name('businesses.create');
+    Route::get('/delete', [ShortcodesController::class, 'delete'])->name('businesses.delete');
+    Route::post('/update', [ShortcodesController::class, 'update'])->name('businesses.update');
+  });
+
+  Route::prefix('wp-shortcodes')->group(function () {
+    Route::get('/', [ShortcodesController::class, 'wpPluginIndex'])->name('wp-shortcodes');
+    Route::post('/create', [ShortcodesController::class, 'create'])->name('businesses.create');
+    Route::get('/delete', [ShortcodesController::class, 'delete'])->name('businesses.delete');
+    Route::post('/update', [ShortcodesController::class, 'update'])->name('businesses.update');
+
+    Route::get('/download', [ShortcodesController::class, 'downloadPlugin'])->name('admin.wp-plugins.download');
+  });
+
+
   Route::prefix('online_request')->group(function () {
     Route::get('/', [RequestsController::class, 'index'])->name('online_request');
     Route::post('/create', [RequestsController::class, 'create'])->name('online_request.create');
@@ -79,7 +97,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [FormFieldOptionController::class, 'index'])->name('ufo');
     Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
     Route::get('/destroy', [FormFieldOptionController::class, 'destroy'])->name('ufo.destroy');
-    Route::post('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
+    Route::get('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
   });
 
   Route::prefix('user-levels')->group(function () {

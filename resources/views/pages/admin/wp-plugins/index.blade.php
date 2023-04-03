@@ -19,7 +19,7 @@
     <div class="page-meta">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Categories</a></li>
+                <li class="breadcrumb-item"><a href="#">Wordpress ShortCodes</a></li>
                 <!-- <li class="breadcrumb-item active" aria-current="page">Basic</li> -->
             </ol>
         </nav>
@@ -29,7 +29,13 @@
     <div class="row layout-top-spacing">
 
         <div class="col-sm-12 pb-3 d-flex justify-content-end">
-            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Add Category</button>
+            <a href="/admin/wp-shortcodes/download" class="btn btn-outline-primary float-right">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-code-square" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                </svg>
+                Download WP Plugins
+            </a>
         </div>
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
@@ -40,45 +46,40 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>User</th>
+                            <th>Shortcode</th>
+                            <th>Category</th>
+                            <th>Position</th>
                             <th class="no-content">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($categories as $category)
-                        <tr>
-                            <td>{{$category->name}}</td>
-                            <td>{{$category->description}}</td>
-                            <td>{{$category->user->name}}</td>
-                            <td >
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
-                                            <a 
-                                                class="dropdown-item view-details" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editModal" 
-                                                href="#"
-                                                onclick='editModal(
-                                                    {{$category->id}},
-                                                    "{{$category->name}}",
-                                                    "{{$category->description}}",
-                                                    {{$category->user_id}},
-                                                    "{{$category->user->name}}",
-                                                    )'
-                                            >Edit</a>
-                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
-                                            <!-- <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a> -->
-                                        </div>
+                    @forelse ($shortcodes as $shortcode)                                                                      
+                        <tr>                            
+                                    
+                            <td class="pl-3">{{$shortcode->name}}</td>
+                            <td class="pl-3">{{$shortcode->shortcode}}</td>
+                            <td class="pl-3">{{$shortcode->shortcodeCategory['name']}}</td>
+                            <td class="pl-4 hide-in-mobile">{{$shortcode->position}}</td>
+                            <td class="pl-4">
+                                @if ($shortcode->name == 'Business Name')
+                                    <div class="align-items-baseline">                                
+                                        <i class="fas fa-edit text-secondary"></i>
+                                        <i class="fas fa-trash-alt text-secondary"></i>                   
                                     </div>
-                                </td>
-                            </tr>
-                    @endforeach
+                                @else
+                                    <div class="align-items-baseline">                                
+                                        <a href="/admin/shortcodes/{{$shortcode->id}}/edit" class="view-details mr-1"><i class="fas fa-edit"></i></a>
+                                        <a class="text-danger delete-shortcode-btn" href="" data-shortcode_business_column="{{$shortcode->business_column}}" data-shortcode_id="{{$shortcode->id}}" href="#" data-toggle="modal" data-target="#AdminDeleteShortcode"><i class="fas fa-trash-alt"></i></a>                         
+                                    </div>
+                                @endif 
+                                
+                            </td>                      
+                                    
+                        </tr>
+                                
+                    @empty
+                        <tr><td>No Data Available</td></tr>
+                    @endforelse
                     </tbody>
                 </table>
 
@@ -107,9 +108,6 @@
                                         <label for="exampleFormControlInput4">User</label>
                                         <select class="form-control" name="user_id">
                                             <option value="all" selected>Select User</option>
-                                            @foreach($users as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -148,9 +146,6 @@
                                         <label for="exampleFormControlInput4">User</label>
                                         <select class="form-control" name="user_id">
                                             <option id="user_id" value="all" selected>Select User</option>
-                                            @foreach($users as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
                                         </select>
 
                                     </div>

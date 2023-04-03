@@ -19,7 +19,7 @@
     <div class="page-meta">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Categories</a></li>
+                <li class="breadcrumb-item"><a href="#">ShortCodes</a></li>
                 <!-- <li class="breadcrumb-item active" aria-current="page">Basic</li> -->
             </ol>
         </nav>
@@ -29,7 +29,7 @@
     <div class="row layout-top-spacing">
 
         <div class="col-sm-12 pb-3 d-flex justify-content-end">
-            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Add Category</button>
+            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Add Shortcode</button>
         </div>
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
@@ -40,45 +40,87 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>User</th>
+                            <th>Shortcode</th>
+                            <th>Category</th>
+                            <th>Required</th>
+                            <th>Enable</th>
+                            <th>Show to Dashboard</th>
+                            <th>Display on WP</th>
+                            <th>Position</th>
                             <th class="no-content">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($categories as $category)
-                        <tr>
-                            <td>{{$category->name}}</td>
-                            <td>{{$category->description}}</td>
-                            <td>{{$category->user->name}}</td>
-                            <td >
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
-                                            <a 
-                                                class="dropdown-item view-details" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editModal" 
-                                                href="#"
-                                                onclick='editModal(
-                                                    {{$category->id}},
-                                                    "{{$category->name}}",
-                                                    "{{$category->description}}",
-                                                    {{$category->user_id}},
-                                                    "{{$category->user->name}}",
-                                                    )'
-                                            >Edit</a>
-                                            <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
-                                            <!-- <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a> -->
-                                        </div>
+                    @forelse ($shortcodes as $shortcode)                                                                      
+                        <tr>                            
+                                    
+                            <td class="pl-3">{{$shortcode->name}}</td>
+                            <td class="pl-3">{{$shortcode->shortcode}}</td>
+                            <td class="pl-3">{{$shortcode->shortcodeCategory['name']}}</td>
+                            <td class="pl-4">
+                            <div class="form-check form-check-primary form-check-inline">
+                                @if( $shortcode->required == 1 )                                    
+                                    <input class="form-check-input" type="checkbox" name="required" value="1" checked disabled>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="required" value="0" disabled >
+                                @endif
+                            </div>
+                            </td> 
+                            <td class="pl-4">
+                            <div class="form-check form-check-primary form-check-inline">
+                                @if( $shortcode->enable == 1 )                                    
+                                    <input class="form-check-input" type="checkbox" name="enable" value="1" checked disabled>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="enable" value="0" disabled >
+                                @endif
+                            </div>
+                            </td>
+                            <td class="pl-4 hide-in-mobile">
+                            <div class="form-check form-check-primary form-check-inline">
+                                @if( $shortcode->show_to_dashboard == 1 )                                    
+                                    <input class="form-check-input" type="checkbox" name="show_to_dashboard" value="1" checked disabled>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="checkbox" value="0" disabled >
+                                @endif
+                            </div>
+                            </td>
+                            <td class="pl-4 hide-in-mobile">
+                            <div class="form-check form-check-primary form-check-inline">
+                                @if( $shortcode->display_on_wp == 1 )                                    
+                                    <input class="form-check-input" type="checkbox" name="display_on_wp" value="1" checked disabled>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="checkbox" value="0" disabled >
+                                @endif
+                            </div>
+                            </td>
+                            <td class="pl-4 hide-in-mobile">{{$shortcode->position}}</td>
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                        <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
+                                        <a 
+                                            class="dropdown-item view-details" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editModal" 
+                                            href="#"
+                                            onclick='editModal(
+                                                )'
+                                        >Edit</a>
+                                        <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
+                                        <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a>
                                     </div>
-                                </td>
-                            </tr>
-                    @endforeach
+                                </div>
+                            </td>                    
+                                    
+                        </tr>
+                                
+                    @empty
+                        <tr><td>No Data Available</td></tr>
+                    @endforelse
                     </tbody>
                 </table>
 
@@ -87,7 +129,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Website</h5>
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New Shortcode</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
                                 </button>
@@ -95,22 +137,37 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/categories/create'>
+                                <form method="post" action='/admin/shortcodes/create'>
                                     @csrf
                                     <div class="form-group">
-                                        <label for="exampleFormControlInput1">Category Name</label>
+                                        <label for="exampleFormControlInput1">Shortcode Name</label>
                                         <input required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
                                         
-                                        <label for="exampleFormControlInput3">Description</label>
-                                        <textarea required name="description" class="form-control" id="exampleFormControlInput3" cols="10" rows="5"></textarea>
-                                        
-                                        <label for="exampleFormControlInput4">User</label>
-                                        <select class="form-control" name="user_id">
-                                            <option value="all" selected>Select User</option>
-                                            @foreach($users as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                        <label for="exampleFormControlInput3">Shortcode Type</label>
+                                        <select id="type" class="form-control" name="type" required>
+                                            <option value="" disabled selected>Select Type</option>                                        
+                                            <option value="image">Image</option>
+                                            <option value="text">Text</option>
+                                        </select>
+                                        <label for="exampleFormControlInput4">Shortcode Category</label>
+                                        <select class="form-control" name="shortcode_category_id">
+                                            <option value="" disabled selected>Select Category</option>
+                                            @foreach($shortcode_categories as $item)                                            
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group row">                   
+                                    <div  class="form-check form-check-primary form-check-inline">
+                                        <div class="form-check mr-5">                                    
+                                            <input id="required" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="required" value="1">
+                                            <label for="required" class="form-check-label">{{ __('Required') }}</label>
+                                        </div>
+                                        <div class="form-check mr-5">                                    
+                                            <input id="enable" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="enable" value="1">
+                                            <label for="enable" class="form-check-label">{{ __('Enable') }}</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -148,9 +205,6 @@
                                         <label for="exampleFormControlInput4">User</label>
                                         <select class="form-control" name="user_id">
                                             <option id="user_id" value="all" selected>Select User</option>
-                                            @foreach($users as $item) 
-                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
-                                            @endforeach
                                         </select>
 
                                     </div>
