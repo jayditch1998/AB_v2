@@ -11,6 +11,7 @@ use App\Http\Controllers\Users\UserLevelController;
 use App\Http\Controllers\FormFieldOption\FormFieldOptionController;
 use App\Http\Controllers\Requests\RequestsController;
 use App\Http\Controllers\Shortcodes\ShortcodesController;
+use App\Http\Controllers\VerficationController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ use Illuminate\Support\Facades\Auth;
 |--------------------------------------------------------------------------
 */
 // Route::get()
-
+Route::get('verification/{pending_id}/resendEmail', [VerficationController::class, 'resendEmail'])->name('verification.resendEmail');
 Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
@@ -112,6 +113,11 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('/generate', [FormGeneratorController::class, 'generate'])->name('form-generator.generate');
     Route::get('/delete', [CategoriesController::class, 'delete'])->name('form-generator.destroy');
     Route::post('/update', [CategoriesController::class, 'update'])->name('form-generator.update');
+  });
+  Route::prefix('verification')->group(function () {
+    Route::get('/', [VerficationController::class, 'index'])->name('verification');
+    Route::post('/update', [VerficationController::class, 'update'])->name('verification.update');
+
   });
 });
 

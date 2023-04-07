@@ -1,14 +1,14 @@
-{{-- 
+{{--
 
 /**
 *
 * Created a new component <x-menu.vertical-menu/>.
-* 
+*
 */
 
 --}}
 
-    
+
         <div class="sidebar-wrapper sidebar-theme">
 
             <nav id="sidebar">
@@ -181,13 +181,22 @@
                     </li>
 
                     <li class="menu {{ Request::routeIs('admin.form-generator') ? 'active' : '' }}">
-                        <a href="{{getRouterValue();}}/admin/form-generator" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                                <span>Form Generator</span>
-                            </div>
-                        </a>
-                    </li>
+                      <a href="{{getRouterValue();}}/admin/form-generator" aria-expanded="false" class="dropdown-toggle">
+                          <div class="">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                              <span>Form Generator</span>
+                          </div>
+                      </a>
+                  </li>
+
+                  <li class="menu {{ Request::routeIs('admin.verification') ? 'active' : '' }}">
+                    <a href="{{getRouterValue();}}/admin/verification" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            <span>Waiting User Verification</span>
+                        </div>
+                    </a>
+                </li>
 
                     <!-- <li class="menu {{ Request::routeIs('chat') ? 'active' : '' }}">
                         <a href="{{getRouterValue();}}/app/chat" aria-expanded="false" class="dropdown-toggle">
@@ -265,7 +274,7 @@
                             </li>
                             <li class="{{ Request::routeIs('invoice-edit') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/invoice/edit"> Edit </a>
-                            </li>                            
+                            </li>
                         </ul>
                     </li>
 
@@ -291,10 +300,10 @@
                             </li>
                             <li class="{{ Request::routeIs('ecommerce-add') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/ecommerce/add"> Create </a>
-                            </li>                            
+                            </li>
                             <li class="{{ Request::routeIs('ecommerce-edit') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/ecommerce/edit"> Edit </a>
-                            </li>                            
+                            </li>
                         </ul>
                     </li>
 
@@ -320,7 +329,7 @@
                             </li>
                             <li class="{{ Request::routeIs('blog-create') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/blog/create"> Create </a>
-                            </li>                            
+                            </li>
                             <li class="{{ Request::routeIs('blog-edit') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/blog/edit"> Edit </a>
                             </li>
@@ -350,7 +359,7 @@
                             </li>
                             <li class="{{ Request::routeIs('modal') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/component/modal"> Modals </a>
-                            </li>                            
+                            </li>
                             <li class="{{ Request::routeIs('cards') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/component/cards"> Cards </a>
                             </li>
@@ -415,7 +424,7 @@
                             </li>
                             <li class="{{ Request::routeIs('breadcrumbs') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/element/breadcrumbs"> Breadcrumbs </a>
-                            </li>                            
+                            </li>
                             <li class="{{ Request::routeIs('buttons') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/element/buttons"> Buttons </a>
                             </li>
@@ -587,7 +596,7 @@
                             </li>
                             <li class="{{ Request::routeIs('maxlength') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/form/maxlength"> Maxlength </a>
-                            </li>                          
+                            </li>
                             <li class="{{ Request::routeIs('checkbox') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/form/checkbox"> Checkbox </a>
                             </li>
@@ -626,7 +635,7 @@
 
                     <li class="menu menu-heading">
                         <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>USER AND PAGES</span></div>
-                    </li>                    
+                    </li>
 
                     <li class="menu {{ Request::is('*/user/*') ? "active" : "" }}">
                         <a href="#users" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/user/*') ? "true" : "false" }}" class="dropdown-toggle">
@@ -745,7 +754,7 @@
 
                             <li>
                                 <a href="#level-three" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed"> Item Level 1c <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg> </a>
-                                <ul class="collapse list-unstyled sub-submenu" id="level-three" data-bs-parent="#pages"> 
+                                <ul class="collapse list-unstyled sub-submenu" id="level-three" data-bs-parent="#pages">
                                     <li>
                                         <a href="javascript:void(0);"> Item Level 2a </a>
                                     </li>
@@ -778,7 +787,7 @@
                             </div>
                         </a>
                     </li>
-                    
+
                     <li class="menu">
                         <a target="_blank" href="https://designreset.com/cork/documentation/laravel/index.html" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
@@ -795,9 +804,9 @@
                             </div>
                         </a>
                     </li>
-                    
+
                 </ul> -->
-                
+
             </nav>
 
         </div>
