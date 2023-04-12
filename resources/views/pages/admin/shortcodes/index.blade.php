@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse ($shortcodes as $shortcode)                                                                      
+                    @foreach ($shortcodes as $shortcode)                                                                      
                         <tr>                            
                                     
                             <td class="pl-3">{{$shortcode->name}}</td>
@@ -95,44 +95,131 @@
                             </td>
                             <td class="pl-4 hide-in-mobile">{{$shortcode->position}}</td>
                             </td>
-                            <td class="text-center">
+                            <td>
                                 <div class="dropdown">
                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                                         <!-- <a class="dropdown-item" href="javascript:void(0);">View</a> -->
-                                        <a 
+                                        <a
                                             class="dropdown-item view-details" 
                                             data-bs-toggle="modal" 
-                                            data-bs-target="#editModal" 
+                                            data-bs-target="#editDialog" 
                                             href="#"
                                             onclick='editModal(
+                                                {{$shortcode->id}},
+                                                {{$shortcode->shortcode_category_id}},
+                                                "{{$shortcode->name}}",
+                                                "{{$shortcode->shortcode}}",
+                                                "{{$shortcode->shortcodeCategory["name"]}}",
+                                                "{{$shortcode->type}}",
+                                                {{$shortcode->position}},
+                                                {{$shortcode->required}},
+                                                {{$shortcode->enable}}, 
+                                                {{$shortcode->show_to_dashboard}}, 
+                                                {{$shortcode->display_on_wp}}, 
+                                                {{$shortcode->full}},
+                                                "{{$shortcode->business_column}}"
                                                 )'
                                         >Edit</a>
-                                        <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
-                                        <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a>
+                                        <!-- <a class="dropdown-item" href="/admin/websites/delete?id=$category->id">Delete</a> -->
                                     </div>
                                 </div>
-                            </td>                    
-                                    
+                            </td>
                         </tr>
                                 
-                    @empty
-                        <tr><td>No Data Available</td></tr>
-                    @endforelse
+                    @endforeach
                     </tbody>
                 </table>
 
+
+
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogTitle" aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editDialogTitle">Edit Shortcode</h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
+                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
+                                <form method="post" action='/admin/shortcodes/update'>
+                                    @csrf
+                                    <input type="hidden" id="id" name="id">
+                                    <input type="hidden" id="business_column" name="oldColumn"/>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">Shortcode Name</label>
+                                        <input id="name" type="text" name="name" class="form-control" id="exampleFormControlInput1" value="" >
+
+                                        <label for="exampleFormControlInput3">Shortcode</label>
+                                        <input id="shortcode" required type="text" name="shortcode" class="form-control" id="exampleFormControlInput3" value="" disabled>
+                                        
+                                        <label for="exampleFormControlInput3">Shortcode Category</label>
+                                        <select class="form-control" name="shortcode_category_id">
+                                            <option id="shortcode_category_id" value="all" selected>Select Category</option>
+                                            @foreach($shortcode_categories as $item)
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <label for="exampleFormControlInput3">Shortcode Type</label>
+                                        <select class="form-control" name="type">
+                                            <option id="type" value="" disabled ></option>                                        
+                                            <option value="image">Image</option>
+                                            <option value="text">Text</option>
+                                        </select>
+
+                                        <label for="exampleFormControlInput3">Position</label>
+                                        <input id="position" required type="text" name="position" class="form-control" value="">
+                                        
+                                        <hr>
+
+                                        <div  class="form-check form-check-primary form-check-inline">
+                                            <div class="form-check mr-5">                                    
+                                                <input id="required" type="checkbox" onclick="$(this).val(this.checked ? '1' : '0')" class="form-check-input" name="required" value="">
+                                                <label for="required" class="form-check-label">{{ __('Required') }}</label>
+                                            </div>
+
+                                            <div class="form-check mr-5">                                    
+                                                <input id="enable" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="enable" value="">
+                                                <label for="enable" class="form-check-label">{{ __('Enable') }}</label>
+                                            </div>
+
+                                            <div class="form-check mr-5">                                    
+                                                <input id="show_to_dashboard" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="show_to_dashboard" value="">
+                                                <label for="show_to_dashboard" class="form-check-label">{{ __('Show on dashboard') }}</label>
+                                            </div>
+
+                                            <div class="form-check mr-5">                                    
+                                                <input id="display_on_wp" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="display_on_wp" value="">
+                                                <label for="display_on_wp" class="form-check-label">{{ __('Display on WP') }}</label>
+                                            </div>
+
+                                            <div class="form-check mr-5">                                    
+                                                <input id="full" type="checkbox" onclick="$(this).val(this.checked ? 1 : 0)" class="form-check-input" name="full" value="">
+                                                <label for="full" class="form-check-label">{{ __('Full') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-light-dark" data-bs-dismiss="modal">Discard</a>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Create Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalCenterTitle">Add New Shortcode</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
-                                </button>
                             </div>
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
@@ -150,12 +237,6 @@
                                             <option value="text">Text</option>
                                         </select>
                                         <label for="exampleFormControlInput4">Shortcode Category</label>
-                                        <select class="form-control" name="shortcode_category_id">
-                                            <option value="" disabled selected>Select Category</option>
-                                            @foreach($shortcode_categories as $item)                                            
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                     <hr>
                                     <div class="form-group row">                   
@@ -179,44 +260,6 @@
                     </div>
                 </div>
 
-                <!-- Edit Modal -->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Website</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width=height="24" viewBox="0 0 24 24" fill="none" stroke="currentCostroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feafeather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1x2="18" y2="18"></line></svg>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
-                                <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/categories/update'>
-                                    @csrf
-                                    <input type="hidden" id="category_id" name="id">
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Category Name</label>
-                                        <input id="name" required type="text" name="name" class="form-control" id="exampleFormControlInput1" value="">
-
-                                        <label for="exampleFormControlInput3">Description</label>
-                                        <input id="description" required type="text" name="description" class="form-control" id="exampleFormControlInput3" value="">
-                                        
-                                        <label for="exampleFormControlInput4">User</label>
-                                        <select class="form-control" name="user_id">
-                                            <option id="user_id" value="all" selected>Select User</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <a class="btn btn-light-dark" data-bs-dismiss="modal">Discard</a>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -244,13 +287,55 @@
                 "aaSorting": []
             });
 
-            function editModal(id, name, description, user_id, user_name) {
+            function editModal(
+                            id,
+                            shortcode_category_id,
+                            name,
+                            shortcode,
+                            shortcodeCategory,
+                            type,
+                            position,
+                            required,
+                            enable,
+                            show_to_dashboard,
+                            display_on_wp,
+                            full,
+                            business_column
+                        ) {
+                console.log(shortcode_category_id, shortcodeCategory, business_column);
+                document.getElementById("id").value = id;
+                document.getElementById("business_column").value = business_column;
+
                 document.getElementById("name").value = name;
-                document.getElementById("description").value = description;
-                const owner =document.getElementById("user_id");
-                owner.value = user_id;
-                owner.text = user_name;
-                document.getElementById("category_id").value = id;
+                document.getElementById("shortcode").value = shortcode;
+                const shortcode_cat =document.getElementById("shortcode_category_id");
+                shortcode_cat.value = shortcode_category_id;
+                shortcode_cat.text = shortcodeCategory;
+
+                const shortcode_type =document.getElementById("type");
+                shortcode_type.value = type;
+                shortcode_type.text = type;
+                document.getElementById("position").value = position;
+                // document.getElementById("required").checked =true;
+                const isRequired = document.getElementById("required");
+                isRequired.value = required
+                required === 1 ? isRequired.checked =true : isRequired.checked =false;
+
+                const isEnabled = document.getElementById("enable");
+                isEnabled.value = enable
+                enable === 1 ? isEnabled.checked =true : isEnabled.checked =false;
+
+                const can_show_to_dashboard = document.getElementById("show_to_dashboard");
+                can_show_to_dashboard.value = show_to_dashboard
+                can_show_to_dashboard === 1 ? can_show_to_dashboard.checked =true : can_show_to_dashboard.checked =false;
+
+                const can_display_on_wp = document.getElementById("display_on_wp");
+                can_display_on_wp.value = display_on_wp
+                can_display_on_wp === 1 ? can_display_on_wp.checked =true : can_display_on_wp.checked =false;
+
+                const is_full = document.getElementById("full");
+                is_full.value = full
+                is_full === 1 ? is_full.checked =true : is_full.checked =false;
             }
         </script>
     </x-slot>

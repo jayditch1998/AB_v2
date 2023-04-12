@@ -9,6 +9,7 @@ use App\Models\ShortcodesCategory\ShortcodesCategoryModel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class ShortcodesController extends Controller
 {
@@ -78,12 +79,59 @@ class ShortcodesController extends Controller
                 return redirect('/admin/shortcodes')->with('message', 'New Shortcode Successfully Added');
             } catch (\Throwable $th) {
                 dd($th->getMessage());
-                return redirect('admin/shortcodes/')->with('error', $e->getMessage());
+                return redirect('admin/shortcodes/')->with('error', $th->getMessage());
             }                
                        
     }else{
         return redirect('/admin/shortcodes')->with('message', $data['name'] . ' already exists in table')->with('exist', '1');
     }
+}
+
+public function update(Request $request)
+{
+    // dd($request->all());
+    $data = request()->validate([
+        'name' => ['required '],
+        'shortcode_category_id' => 'required',
+        'type' => 'required',                  
+        'position' => '',
+        'full' => '',
+
+    ]);
+    $shortcode_id = $request->id;
+    $enable = (request()->get('enable') ? 1 : 0);
+    $full = (request()->get('full') ? 1 : 0);
+    
+    $show_to_dashboard = (request()->get('show_to_dashboard') ? 1 : 0);
+    $display_on_wp = (request()->get('display_on_wp') ? 1 : 0);
+    $required = (request()->get('required') ? 1 : 0);
+    $oldColumn = request('oldColumn');
+    $newColumn  = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $data['name']))); 
+    //$newColumn = strtolower(str_replace(" ","_", $data['name']));
+    $shortcode = '[AgencyBuilder_'.$newColumn.']';   
+    
+    try {
+        Schema::table('businesses', function(Blueprint $table) use ($oldColumn, $newColumn){
+            $table->renameColumn($oldColumn, $newColumn);
+        });
+        Schema::table('user_onlineforms', function(Blueprint $table) use ($oldColumn, $newColumn){
+            $table->renameColumn($oldColumn, $newColumn);
+        });
+        ShortcodesModel::findOrFail($shortcode_id)->update(array_merge($data, [
+            'business_column'=> $newColumn, 
+            'shortcode' => $shortcode, 
+            'enable' => $enable,
+            'show_to_dashboard' => $show_to_dashboard,
+            'display_on_wp' => $display_on_wp,
+            'required' => $required,  
+            'full' => $full,
+            ]));
+
+            return redirect('/admin/shortcodes')->with('message', 'Shortcode Successfully updated');
+            
+        } catch (\Exception $e) {
+            return redirect('/admin/shortcodes')->with('error', $e);
+        }
 }
 }
 
