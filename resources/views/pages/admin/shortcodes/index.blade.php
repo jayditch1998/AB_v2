@@ -236,7 +236,13 @@
                                             <option value="image">Image</option>
                                             <option value="text">Text</option>
                                         </select>
-                                        <label for="exampleFormControlInput4">Shortcode Category</label>
+                                        <label for="exampleFormControlInput3">Shortcode Category</label>
+                                        <select class="form-control" name="shortcode_category_id">
+                                            <option id="shortcode_category_id" value="all" selected>Select Category</option>
+                                            @foreach($shortcode_categories as $item)
+                                            <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id  ? "selected":"") }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <hr>
                                     <div class="form-group row">                   

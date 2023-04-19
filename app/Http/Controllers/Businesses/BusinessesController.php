@@ -55,11 +55,16 @@ class BusinessesController extends Controller
         $data = [];
         foreach ($shortcode as $item){
             //dd($data);
-            if($item['type'] == 'text'){
-                $data = array_merge($data, [$item['business_column'] => ($item['required'] == 1) ? 'required' : '' ]);
-            }else{
-                $data = array_merge($data, [$item['business_column'] => ['image' => 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:512']]);
-            }
+            $data = array_merge($data, [$item['business_column'] => ($item['required'] == 1) ? 'required' : '' ]);
+
+            // if($item['type'] == 'text'){
+            //     $data = array_merge($data, [$item['business_column'] => ($item['required'] == 1) ? 'required' : '' ]);
+            // }
+            // else{
+            //     $data = array_merge($data, [$item['business_column'] => ['image' => 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:512']]);
+            //     $data = array_merge($data, [$item['business_column'] => ['image' => 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:512']]);
+            //     dd($data);
+            // }
         }
         $data = request()->validate( $data);
         // dd($data);
@@ -102,7 +107,7 @@ class BusinessesController extends Controller
         }
         return redirect('admin/businesses'); 
       }catch(\Throwable $th){
-        dd($th->getMessage());
+        return $th->getMessage();
       }
     }
 
@@ -214,7 +219,7 @@ class BusinessesController extends Controller
           if(!is_object($item)){
               $validatedData[$key] = $item;
           }else{
-              $full = Shortcode::where('business_column', $key)->first();
+              $full = ShortcodesModel::where('business_column', $key)->first();
               // $public_path = storage_path('app/public/');
               // $save_path = 'uploads/'.time().'-'.$key.$item->getClientOriginalName();
               // $logo = Image::make($item);
@@ -235,7 +240,7 @@ class BusinessesController extends Controller
 
       $business_code = strtolower(str_replace(' ', '-', $validatedData['business_name']));
       $validatedData =array_merge($validatedData, ['business_code' => $business_code]);
-      BusinessesModel::findOrFail($id)->update($validatedData);
+      if($id) BusinessesModel::findOrFail($id)->update($validatedData);
       return redirect('admin/businesses'); 
       }catch(\Throwable $th){
         dd($th->getMessage());

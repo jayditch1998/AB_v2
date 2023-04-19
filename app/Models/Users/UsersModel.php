@@ -32,7 +32,7 @@ class UsersModel extends Model
         return $this->hasMany(WebsitesModel::class, 'user_id');
     }
 
-    public function categories(): HasMany
+    public function categories()
     {
         return $this->hasMany(CategoriesModel::class, 'user_id');
     }

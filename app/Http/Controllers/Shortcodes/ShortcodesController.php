@@ -69,7 +69,7 @@ class ShortcodesController extends Controller
                 Schema::table('pending_orders', function($table) use ($newColumn){
                     $table->string($newColumn)->nullable();
                 });
-
+                // $shortcode_category_id = $data['data'],;
                 ShortcodesModel::create(array_merge($data, [
                     'position' => $Position, 
                     'shortcode' => $shortcode,
@@ -89,7 +89,7 @@ class ShortcodesController extends Controller
 
 public function update(Request $request)
 {
-    // dd($request->all());
+    dd($request->all());
     $data = request()->validate([
         'name' => ['required '],
         'shortcode_category_id' => 'required',
@@ -111,12 +111,12 @@ public function update(Request $request)
     $shortcode = '[AgencyBuilder_'.$newColumn.']';   
     
     try {
-        Schema::table('businesses', function(Blueprint $table) use ($oldColumn, $newColumn){
-            $table->renameColumn($oldColumn, $newColumn);
-        });
-        Schema::table('user_onlineforms', function(Blueprint $table) use ($oldColumn, $newColumn){
-            $table->renameColumn($oldColumn, $newColumn);
-        });
+        // Schema::table('businesses', function($table) use ($oldColumn, $newColumn){
+        //     $table->renameColumn($oldColumn, $newColumn);
+        // });
+        // Schema::table('user_onlineforms', function(Blueprint $table) use ($oldColumn, $newColumn){
+        //     $table->renameColumn($oldColumn, $newColumn);
+        // });
         ShortcodesModel::findOrFail($shortcode_id)->update(array_merge($data, [
             'business_column'=> $newColumn, 
             'shortcode' => $shortcode, 

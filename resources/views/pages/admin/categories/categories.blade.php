@@ -50,7 +50,7 @@
                         <tr>
                             <td>{{$category->name}}</td>
                             <td>{{$category->description}}</td>
-                            <td>{{$category->user->name}}</td>
+                            <td>{{$category->user->name ?? 'N/A'}}</td>
                             <td >
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -69,7 +69,7 @@
                                                     "{{$category->name}}",
                                                     "{{$category->description}}",
                                                     {{$category->user_id}},
-                                                    "{{$category->user->name}}",
+                                                    "{{$category->user->name ?? 'N/A'}}",
                                                     )'
                                             >Edit</a>
                                             <!-- <a class="dropdown-item" href="javascript:void(0);">View Response</a> -->
