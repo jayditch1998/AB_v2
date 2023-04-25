@@ -308,7 +308,6 @@
                             full,
                             business_column
                         ) {
-                            alert('wew');
                 console.log(shortcode_category_id, shortcodeCategory, business_column);
                 document.getElementById("id").value = id;
                 document.getElementById("business_column").value = business_column;
