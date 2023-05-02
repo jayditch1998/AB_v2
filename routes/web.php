@@ -33,6 +33,64 @@ use Illuminate\Support\Facades\Auth;
 */
 // Route::get()
 Route::get('verification/{pending_id}/resendEmail', [VerficationController::class, 'resendEmail'])->name('verification.resendEmail');
+Route::group(['middleware' => ['auth']], function(){
+  Route::prefix('dashboard')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::post('/update', [AdminController::class, 'update'])->name('dashboard.update');
+  });
+  Route::prefix('websites')->group(function () {
+    Route::get('/', [WebsitesController::class, 'index'])->name('websites');
+    Route::post('/create', [WebsitesController::class, 'create'])->name('website.create');
+    Route::get('/delete', [WebsitesController::class, 'delete'])->name('website.delete');
+    Route::post('/update', [WebsitesController::class, 'update'])->name('website.update');
+  });
+  Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])->name('categories');
+    Route::post('/create', [CategoriesController::class, 'create'])->name('categories.create');
+    Route::get('/delete', [CategoriesController::class, 'delete'])->name('categories.delete');
+    Route::post('/update', [CategoriesController::class, 'update'])->name('categories.update');
+  });
+  Route::prefix('user-field-options')->group(function () {
+    Route::get('/', [FormFieldOptionController::class, 'index'])->name('ufo');
+    Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
+    Route::get('/destroy', [FormFieldOptionController::class, 'destroy'])->name('ufo.destroy');
+    Route::get('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
+  });
+  Route::prefix('online_request')->group(function () {
+    Route::get('/', [RequestsController::class, 'index'])->name('online_request');
+    Route::post('/create', [RequestsController::class, 'create'])->name('online_request.create');
+    Route::get('/delete', [RequestsController::class, 'delete'])->name('online_request.delete');
+    Route::post('/update', [RequestsController::class, 'update'])->name('online_request.update');
+
+    Route::get('/approve', [RequestsController::class, 'approve'])->name('online_request.approve');
+    Route::post('/approve/all/requests', [RequestsController::class, 'approveAll'])->name('online_request.approve.all');
+
+    Route::get('/decline', [RequestsController::class, 'decline'])->name('online_request.decline');
+    Route::post('/decline/all/requests', [RequestsController::class, 'declineAll'])->name('online_request.decline.all');
+  });
+  Route::prefix('wp-shortcodes')->group(function () {
+    Route::get('/', [ShortcodesController::class, 'wpPluginIndex'])->name('wp-shortcodes');
+    Route::post('/create', [ShortcodesController::class, 'create'])->name('businesses.create');
+    Route::get('/delete', [ShortcodesController::class, 'delete'])->name('businesses.delete');
+    Route::post('/update', [ShortcodesController::class, 'update'])->name('businesses.update');
+
+    Route::get('/download', [ShortcodesController::class, 'downloadPlugin'])->name('admin.wp-plugins.download');
+  });
+  Route::prefix('verification')->group(function () {
+    Route::get('/', [VerficationController::class, 'index'])->name('verification');
+    Route::post('/update', [VerficationController::class, 'update'])->name('verification.update');
+
+  });
+  Route::prefix('form-generator')->group(function () {
+    Route::get('/', [FormGeneratorController::class, 'index'])->name('form-generator');
+    Route::post('/generate', [FormGeneratorController::class, 'generate'])->name('form-generator.generate');
+    Route::get('/delete', [CategoriesController::class, 'delete'])->name('form-generator.destroy');
+    Route::post('/update', [CategoriesController::class, 'update'])->name('form-generator.update');
+  });
+});
+
+
+
 Route::name('admin.')->prefix('admin')->group(function () {
   Route::prefix('dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');

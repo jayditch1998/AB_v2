@@ -51,6 +51,31 @@ class WebsitesModel extends Model
         return $query->get();
     }
 
+    public static function getUserWebsitesWithCategories(){
+        $select = [
+            'websites.id',
+            'websites.user_id',
+            'websites.category_id',
+            'websites.name',
+            'websites.url',
+            'websites.status',
+            'websites.business_credit',
+            'websites.business_credit',
+            'websites.deleted_at',
+            'wc.name as category_name',
+            Db::raw('COUNT(b.id) as business_count')
+        ];
+
+        $query = self::select($select)
+                    ->where('websites.user_id',auth()->user()->id)
+                    ->leftjoin('website_categories as wc', 'wc.id', '=', 'websites.category_id')
+                    ->leftjoin('businesses as b', 'b.website_id', '=', 'websites.id')
+                    ->whereNull('websites.deleted_at')
+                    ->groupBy('websites.id')
+                    ->orderBy('id','desc');
+        return $query->get();
+    }
+
     public static function insert($data, $id=null){
         self::updateOrCreate(['id'=>$id], array_merge($data, ['business_credit'=>50]));
     }

@@ -18,14 +18,26 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $all_website = WebsitesModel::get();
-        $all_active_website = $all_website->where('status',1)->count();
-        $all_inactive_website = $all_website->where('status',0)->count();
-        $all_business = BusinessesModel::get();
-        $all_inactive_business = $all_business->whereIn('website_id', $all_website->where('status',0)->modelKeys())->count();
-        $all_active_business = $all_business->whereIn('website_id', $all_website->where('status',1)->modelKeys())->count();
-
-        return view('pages.admin.dashboard', ['title' => 'Admin Dashboard', 'breadcrumb' => 'This Breadcrumb', 'all_website' => $all_website, 'all_business' => $all_business,'all_active_website' => $all_active_website, 'all_inactive_website' => $all_inactive_website,'all_active_business' => $all_active_business, 'all_inactive_business' => $all_inactive_business]);
+        if(auth()->user()->role->name=="Admin"){
+            $all_website = WebsitesModel::get();
+            $all_active_website = $all_website->where('status',1)->count();
+            $all_inactive_website = $all_website->where('status',0)->count();
+            $all_business = BusinessesModel::get();
+            $all_inactive_business = $all_business->whereIn('website_id', $all_website->where('status',0)->modelKeys())->count();
+            $all_active_business = $all_business->whereIn('website_id', $all_website->where('status',1)->modelKeys())->count();
+    
+            return view('pages.admin.dashboard', ['title' => 'Admin Dashboard', 'breadcrumb' => 'This Breadcrumb', 'all_website' => $all_website, 'all_business' => $all_business,'all_active_website' => $all_active_website, 'all_inactive_website' => $all_inactive_website,'all_active_business' => $all_active_business, 'all_inactive_business' => $all_inactive_business]);
+        }elseif(auth()->user()->role->name=="User"){
+            $all_website = WebsitesModel::where('user_id',auth()->user()->id)->get();
+            $all_active_website = $all_website->where('status',1)->where('user_id',auth()->user()->id)->count();
+            $all_inactive_website = $all_website->where('status',0)->where('user_id',auth()->user()->id)->count();
+            $all_business = BusinessesModel::whereIn('website_id', $all_website->modelKeys())->get();
+            $all_inactive_business = $all_business->whereIn('website_id', $all_website->where('status',0)->modelKeys(),'user_id',auth()->user()->id)->count();
+            $all_active_business = $all_business->whereIn('website_id', $all_website->where('status',1)->modelKeys(),'user_id',auth()->user()->id)->count();
+    
+            return view('pages.admin.dashboard', ['title' => 'Admin Dashboard', 'breadcrumb' => 'This Breadcrumb', 'all_website' => $all_website, 'all_business' => $all_business,'all_active_website' => $all_active_website, 'all_inactive_website' => $all_inactive_website,'all_active_business' => $all_active_business, 'all_inactive_business' => $all_inactive_business]);
+        }
+        
         
     }
 

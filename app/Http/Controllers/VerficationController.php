@@ -44,11 +44,13 @@ class VerficationController extends Controller
       }
       if(auth()->user()->role_id==1){
           $businesses = PendingOrdersModel::select(array_merge($shortcodeInColumn,['id'],['created_at'],['verified'],['pending_orders.*']))->has('website')->where('verified',0)->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
+          return view('pages.admin.verification.index', compact('businesses','shortcodeInColumn','users','websites','categories'));
       }else{
-          $businesses = PendingOrdersModel::select(array_merge($shortcodeInColumn,['id'],['created_at'],['verified'],'pending_orders.*'))->has('website')->where('verified',0)->where('user_id',auth()->user()->id)->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
+          $businesses = PendingOrdersModel::select(array_merge($shortcodeInColumn,['id'],['created_at'],['verified'],['pending_orders.*']))->has('website')->where('verified',0)->where('user_id',auth()->user()->id)->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->paginate(10);
+          return view('pages.user.verification.index', compact('businesses','shortcodeInColumn','users','websites','categories'));
       }
 
-      return view('pages.admin.verification.index', compact('businesses','shortcodeInColumn','users','websites','categories'));
+      
     }
 
     /**
