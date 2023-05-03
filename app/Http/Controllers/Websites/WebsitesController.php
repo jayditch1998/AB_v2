@@ -11,23 +11,36 @@ use App\Models\Users\UsersModel;
 
 class WebsitesController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         // return $users);
-        try{
-            $data = WebsitesModel::getWebsitesWithCategories();
-            $categories = CategoriesModel::get();
-            $users = UsersModel::getActiveUsers()->get();
-            
-        }catch(\Throwable $th){
-            return $th->getMessage();
+        if (auth()->user()->role->name == "Admin") {
+            try {
+                $data = WebsitesModel::getWebsitesWithCategories();
+                $categories = CategoriesModel::get();
+                $users = UsersModel::getActiveUsers()->get();
+            } catch (\Throwable $th) {
+                return $th->getMessage();
+            }
+            return view('pages.admin.websites.websites', compact('data', 'categories', 'users'));
+        }elseif (auth()->user()->role->name == "User") {
+            try {
+                $data = WebsitesModel::getUserWebsitesWithCategories();
+                $categories = CategoriesModel::where('user_id',auth()->user()->id)->get();
+                $users = UsersModel::getActiveUsers()->where('id',auth()->user()->id)->get();
+            } catch (\Throwable $th) {
+                return $th->getMessage();
+            }
+            return view('pages.user.websites.websites', compact('data', 'categories', 'users'));
         }
+
         
-        return view('pages.admin.websites.websites', compact('data', 'categories', 'users'));
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         // dd($request->all());
-        try{
+        try {
             $data = $request->validate([
                 'name' => 'required',
                 'category_id' => 'required',
@@ -35,23 +48,25 @@ class WebsitesController extends Controller
                 'user_id' => 'required',
             ]);
             WebsitesModel::insert($data);
-        return redirect('admin/websites'); 
-        }catch(\Throwable $th){
+            return redirect('admin/websites');
+        } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }
 
-    public function delete(Request $request){
-        try{
+    public function delete(Request $request)
+    {
+        try {
             WebsitesModel::deleteWebsite($request->id);
-            return redirect('admin/websites'); 
-        }catch(\Throwable $th){
+            return redirect('admin/websites');
+        } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }
 
-    public function update(Request $request){
-        try{
+    public function update(Request $request)
+    {
+        try {
             $data = $request->validate([
                 'id' => 'required',
                 'name' => 'required',
@@ -60,13 +75,14 @@ class WebsitesController extends Controller
                 'user_id' => 'required',
             ]);
             WebsitesModel::insert($data, $request->id);
-            return redirect('admin/websites'); 
-        }catch(\Throwable $th){
+            return redirect('admin/websites');
+        } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }
 
-    public function edit(WebsitesModel $WebsitesModel){
+    public function edit(WebsitesModel $WebsitesModel)
+    {
         return view('pages.admin.websites.websites', compact('WebsitesModel'));
     }
 }

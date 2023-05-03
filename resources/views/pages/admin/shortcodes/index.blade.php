@@ -333,15 +333,15 @@
 
                 const can_show_to_dashboard = document.getElementById("show_to_dashboard");
                 can_show_to_dashboard.value = show_to_dashboard
-                can_show_to_dashboard === 1 ? can_show_to_dashboard.checked =true : can_show_to_dashboard.checked =false;
+                show_to_dashboard === 1 ? can_show_to_dashboard.checked =true : can_show_to_dashboard.checked =false;
 
                 const can_display_on_wp = document.getElementById("display_on_wp");
                 can_display_on_wp.value = display_on_wp
-                can_display_on_wp === 1 ? can_display_on_wp.checked =true : can_display_on_wp.checked =false;
+                display_on_wp === 1 ? can_display_on_wp.checked =true : can_display_on_wp.checked =false;
 
                 const is_full = document.getElementById("full");
                 is_full.value = full
-                is_full === 1 ? is_full.checked =true : is_full.checked =false;
+                full === 1 ? is_full.checked =true : is_full.checked =false;
             }
         </script>
     </x-slot>

@@ -12,55 +12,82 @@ use Illuminate\Http\Request;
 class FormFieldOptionController extends Controller
 {
 
-    public function index(){
-        $result = [];
-        $lastResult = [];
-        $userForms = FormFieldOptionModel::get();
-        $userForms =$userForms->makeHidden(['id', 'license_key', 'website_id', 'created_at', 'updated_at', 'deleted_at']);
-        foreach ($userForms as $key => $userForm){
-            $aCount = 0;
-            $dCount = 0;
-            $convertToArrayForms = $userForm->toArray();
-            foreach($convertToArrayForms as $form){
-                if($form == 1){
-                    $aCount = $aCount+1;
-                }else{
-                    $dCount = $dCount+1;
+    public function index()
+    {
+        if (auth()->user()->role->name == "Admin") {
+            $result = [];
+            $lastResult = [];
+            $userForms = FormFieldOptionModel::get();
+            $userForms = $userForms->makeHidden(['id', 'license_key', 'website_id', 'created_at', 'updated_at', 'deleted_at']);
+            foreach ($userForms as $key => $userForm) {
+                $aCount = 0;
+                $dCount = 0;
+                $convertToArrayForms = $userForm->toArray();
+                foreach ($convertToArrayForms as $form) {
+                    if ($form == 1) {
+                        $aCount = $aCount + 1;
+                    } else {
+                        $dCount = $dCount + 1;
+                    }
                 }
+                $result['email'] = $userForm->user_email;
+                $result['activated'] = $aCount;
+                $result['deactivated'] = $dCount;
+                array_push($lastResult, $result);
             }
-            $result['email'] = $userForm->user_email;
-            $result['activated'] = $aCount;
-            $result['deactivated'] = $dCount;
-            array_push($lastResult, $result);
+            return view('pages.admin.formfieldoptions.formfieldoptions', compact('lastResult'));
+        }elseif (auth()->user()->role->name == "User") {
+            $result = [];
+            $lastResult = [];
+            $userForms = FormFieldOptionModel::where('user_email',auth()->user()->email)->get();
+            $userForms = $userForms->makeHidden(['id', 'license_key', 'website_id', 'created_at', 'updated_at', 'deleted_at']);
+            foreach ($userForms as $key => $userForm) {
+                $aCount = 0;
+                $dCount = 0;
+                $convertToArrayForms = $userForm->toArray();
+                foreach ($convertToArrayForms as $form) {
+                    if ($form == 1) {
+                        $aCount = $aCount + 1;
+                    } else {
+                        $dCount = $dCount + 1;
+                    }
+                }
+                $result['email'] = $userForm->user_email;
+                $result['activated'] = $aCount;
+                $result['deactivated'] = $dCount;
+                array_push($lastResult, $result);
+            }
+            return view('pages.user.formfieldoptions.formfieldoptions', compact('lastResult'));
         }
-        return view('pages.admin.formfieldoptions.formfieldoptions', compact('lastResult'));
+        
     }
 
-    public function editUserFormOptions($user){
+    public function editUserFormOptions($user)
+    {
         $data = FormFieldOptionModel::where('user_email', $user)->get();
-        $data =$data->makeHidden(['id', 'user_email', 'license_key', 'website_id', 'created_at', 'updated_at', 'deleted_at']);
+        $data = $data->makeHidden(['id', 'user_email', 'license_key', 'website_id', 'created_at', 'updated_at', 'deleted_at']);
         $activated_fields = [];
 
-        foreach($data as $key => $val){
+        foreach ($data as $key => $val) {
             $toArray = json_decode(json_encode($val), true);
             $activated_fields['data'] = $toArray;
         }
         $activated_fields['license_key'] = $data[0]->license_key;
-        $LK = $activated_fields['license_key'] ;
+        $LK = $activated_fields['license_key'];
         // return response()->json($activated_fields);
-        
+
         $html = '';
-        foreach($toArray as $key => $item){
+        foreach ($toArray as $key => $item) {
             $html .= '<tr>                            
-                <td>'.ucwords(str_replace('_', ' ', $key)).'</td>
+                <td>' . ucwords(str_replace('_', ' ', $key)) . '</td>
                     <td>
-                        <span class='.($item == 1 ? 'alert alert-success p-1 rounded-lg' : 'alert alert-danger p-1 rounded-lg').'>
-                            '.($item == 1 ? 'Activated' : 'Deactivated').'
+                        <span class=' . ($item == 1 ? 'alert alert-success p-1 rounded-lg' : 'alert alert-danger p-1 rounded-lg') . '>
+                            ' . ($item == 1 ? 'Activated' : 'Deactivated') . '
                         </span>
                     </td>
                         <td class="pl-3">
                             <div class="align-items-baseline">                           
-                            '.($item == 1 ? '
+                            ' . ($item == 1 ? '
                                 <a 
                                     href="#"
                                     class="text-danger delete-website-btn"
@@ -70,17 +97,17 @@ class FormFieldOptionController extends Controller
                                 <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                             </a>'
-                            :
-                                '<a 
+                :
+                '<a 
                                 href="#"
-                                onclick="updateStatus('."'$LK'".', '."'$key'".')"
+                                onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ')"
                                 class="text-success delete-website-btn"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
-                            </a>').'
+                            </a>') . '
                             </div>  
                         </td>  
                ';
@@ -92,25 +119,27 @@ class FormFieldOptionController extends Controller
         // return view('pages.admin.formfieldoptions.edit_options', ['activated_fields' => $activated_fields]);
     }
 
-    public function update($formKey){
+    public function update($formKey)
+    {
         dd($formKey);
-        try{
+        try {
             $data = FormFieldOptionModel::where('license_key', $LKey)->first();
             $data->$formKey = 1;
             $data->save();
-            return redirect()->back()->with('message', 'Field: '.ucwords(str_replace('_', ' ', $formKey)).' activated');
-        }catch(\Exception $e){
+            return redirect()->back()->with('message', 'Field: ' . ucwords(str_replace('_', ' ', $formKey)) . ' activated');
+        } catch (\Exception $e) {
             dd($e);
         }
     }
 
-    public function deactivateField($formKey, $LKey){
-        try{
+    public function deactivateField($formKey, $LKey)
+    {
+        try {
             $data = FormFieldOptionModel::where('license_key', $LKey)->first();
             $data->$formKey = 0;
             $data->save();
-            return redirect()->back()->with('warning', 'Field: '.ucwords(str_replace('_', ' ', $formKey)).' deactivated');
-        }catch(\Exception $e){
+            return redirect()->back()->with('warning', 'Field: ' . ucwords(str_replace('_', ' ', $formKey)) . ' deactivated');
+        } catch (\Exception $e) {
             dd($e);
         }
     }

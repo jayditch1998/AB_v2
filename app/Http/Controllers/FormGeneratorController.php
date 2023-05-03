@@ -16,13 +16,22 @@ class FormGeneratorController extends Controller
      */
     public function index()
     {
-        
-        $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
-        if($websites){
-            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
-        }else{
-            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+        if (auth()->user()->role->name == "Admin") {
+            $websites = WebsitesModel::get();
+            if($websites){
+                return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+            }else{
+                return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+            } 
+        }elseif (auth()->user()->role->name == "User") {
+            $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
+            if($websites){
+                return view('pages.user.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+            }else{
+                return view('pages.user.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);
+            }
         }
+        
     }
 
     /**
