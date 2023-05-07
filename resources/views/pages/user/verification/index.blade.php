@@ -21,7 +21,7 @@
             <div class="page-meta">
                 <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Users</a></li>
+                        <li class="breadcrumb-item"><a href="#">For Verifications</a></li>
                         <!-- <li class="breadcrumb-item active" aria-current="page">Basic</li> -->
                     </ol>
                 </nav>
@@ -30,10 +30,10 @@
 
             <div class="row layout-top-spacing">
 
-                <div class="col-sm-12 pb-3 d-flex justify-content-end">
+                <!-- <div class="col-sm-12 pb-3 d-flex justify-content-end">
                     <button class="btn btn-outline-primary float-right" data-bs-toggle="modal"
                         data-bs-target="#exampleModalCenter">Add User</button>
-                </div>
+                </div> -->
 
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     @if (count($errors) > 0)

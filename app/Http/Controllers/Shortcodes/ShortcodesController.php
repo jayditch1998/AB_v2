@@ -16,7 +16,9 @@ class ShortcodesController extends Controller
     public function index(Request $request)
     {
        
-        $shortcodes = ShortcodesModel::orderBy('position', 'asc')
+        
+        if (auth()->user()->role->name == "Admin") {
+            $shortcodes = ShortcodesModel::orderBy('position', 'asc')
             ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
                 return $query->where('shortcode_category_id', $request['category']);
             })
@@ -24,15 +26,30 @@ class ShortcodesController extends Controller
                 return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
             })
             ->get();
-        $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
+            $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
 
-        return view('pages.admin.shortcodes.index', compact('shortcodes', 'shortcode_categories'));
+            return view('pages.admin.shortcodes.index', compact('shortcodes', 'shortcode_categories'));
+        }elseif (auth()->user()->role->name == "User") {
+            $shortcodes = ShortcodesModel::orderBy('position', 'asc')
+            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                return $query->where('shortcode_category_id', $request['category']);
+            })
+            ->when(!empty($request['q']), function ($query) use ($request) {
+                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+            })
+            ->get();
+
+            return view('pages.admin.shortcodes.index', compact('shortcodes'));
+        }
+
+        
     }
 
     public function wpPluginIndex()
     {
         $request = request();
-        $shortcodes = ShortcodesModel::where('display_on_wp', 1)->orderBy('position', 'asc')
+        if (auth()->user()->role->name == "Admin") {
+            $shortcodes = ShortcodesModel::where('display_on_wp', 1)->orderBy('position', 'asc')
             ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
                 return $query->where('shortcode_category_id', $request['category']);
             })
@@ -40,9 +57,23 @@ class ShortcodesController extends Controller
                 return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
             })
             ->get();
-        $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
+            $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
 
-        return view('pages.admin.wp-plugins.index', compact('shortcodes', 'shortcode_categories'));
+            return view('pages.admin.wp-plugins.index', compact('shortcodes', 'shortcode_categories'));
+
+        }elseif (auth()->user()->role->name == "User") {
+            $shortcodes = ShortcodesModel::where('display_on_wp', 1)->orderBy('position', 'asc')
+            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                return $query->where('shortcode_category_id', $request['category']);
+            })
+            ->when(!empty($request['q']), function ($query) use ($request) {
+                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+            })
+            ->get();
+
+            return view('pages.user.shortcodes.shortcodes', compact('shortcodes'));
+        }
+
     }
 
     public function downloadPlugin()
