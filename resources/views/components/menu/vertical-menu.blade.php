@@ -356,7 +356,7 @@
           </a>
         </li>
 
-        <li class="menu {{ Request::routeIs('online_request') ? 'active' : '' }}">
+        <!-- <li class="menu {{ Request::routeIs('online_request') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/online_request" aria-expanded="false" class="dropdown-toggle">
             <div class="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -370,7 +370,7 @@
               <span>Requests List</span>
             </div>
           </a>
-        </li>
+        </li> -->
        
         <li class="menu {{ Request::routeIs('form-generator') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/form-generator" aria-expanded="false" class="dropdown-toggle">
@@ -399,7 +399,7 @@
                 <path
                   d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5Zm0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z" />
               </svg>
-              <span>Short Codes</span>
+              <span>User Verifications</span>
             </div>
           </a>
         </li>
