@@ -14,7 +14,7 @@ class WebsitesController extends Controller
     public function index()
     {
         // return $users);
-        if (auth()->user()->role->name == "Admin") {
+        if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")) {
             try {
                 $data = WebsitesModel::getWebsitesWithCategories();
                 $categories = CategoriesModel::get();

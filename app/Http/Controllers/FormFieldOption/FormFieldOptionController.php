@@ -14,7 +14,7 @@ class FormFieldOptionController extends Controller
 
     public function index()
     {
-        if (auth()->user()->role->name == "Admin") {
+        if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")) {
             $result = [];
             $lastResult = [];
             $userForms = FormFieldOptionModel::get();

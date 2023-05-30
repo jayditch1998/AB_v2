@@ -11,7 +11,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role->name == "Admin") {
+        if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")) {
             try {
 
                 $categories = CategoriesModel::getAllCategories();

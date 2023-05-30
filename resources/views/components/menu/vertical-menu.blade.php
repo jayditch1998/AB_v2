@@ -50,7 +50,7 @@
       </div>
     @endif
     <div class="shadow-bottom"></div>
-    @if (auth()->user()->role->name == 'Admin')
+    @if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager"))
       <ul class="list-unstyled menu-categories" id="accordionExample">
         <!-- <li class="menu {{ Request::is('*/dashboard/*') ? 'active' : '' }}">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/dashboard/*') ? 'true' : 'false' }}" class="dropdown-toggle">
@@ -120,7 +120,7 @@
             </li>
           </ul>
         </li>
-
+        @if (!auth()->user()->role->name == "Manager")
         <li class="menu {{ Request::routeIs('admin.businesses') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/businesses" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -135,7 +135,7 @@
             </div>
           </a>
         </li>
-
+        @endif
         <li class="menu {{ Request::routeIs('admin.ufo') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/user-field-options" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -165,7 +165,7 @@
             </div>
           </a>
         </li>
-
+        @if (!auth()->user()->role->name == "Manager")
         <li class="menu {{ Request::routeIs('admin.shortcodes') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/shortcodes" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -181,7 +181,7 @@
             </div>
           </a>
         </li>
-
+        
         <li class="menu {{ Request::routeIs('admin.wp-shortcodes') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/wp-shortcodes" aria-expanded="false" class="dropdown-toggle">
             <div class="">
@@ -199,7 +199,7 @@
             </div>
           </a>
         </li>
-
+        @endif
         <!-- <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
                         <a href="{{ getRouterValue() }}/app/calendar" aria-expanded="false" class="dropdown-toggle">
                             <div class="">

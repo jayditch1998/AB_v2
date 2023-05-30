@@ -16,7 +16,7 @@ class FormGeneratorController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role->name == "Admin") {
+        if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")) {
             $websites = WebsitesModel::get();
             if($websites){
                 return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites]);

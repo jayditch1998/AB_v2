@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class RequestsController extends Controller
 {
     public function index(){
-        if (auth()->user()->role->name == "Admin") {
+        if ((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")) {
             try{
                 $websites = WebsitesModel::all();
                 $shortcodes = ShortcodesModel::where('enable', '1')->where('show_to_dashboard', '1')->orderBy('position', 'asc');

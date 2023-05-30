@@ -18,7 +18,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->role->name=="Admin"){
+        if((auth()->user()->role->name == "Admin") || (auth()->user()->role->name == "Manager")){
             $all_website = WebsitesModel::get();
             $all_active_website = $all_website->where('status',1)->count();
             $all_inactive_website = $all_website->where('status',0)->count();
