@@ -154,11 +154,13 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
   Route::prefix('user-field-options')->group(function () {
     Route::get('/', [FormFieldOptionController::class, 'index'])->name('ufo');
-    Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
     Route::get('/destroy', [FormFieldOptionController::class, 'destroy'])->name('ufo.destroy');
-    Route::get('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
+    Route::post('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
+    Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
   });
-
+  Route::get('/test', function(){
+    return 'tae';
+  });
   Route::prefix('user-levels')->group(function () {
     Route::get('/', [UserLevelController::class, 'index'])->name('user-levels');
     Route::post('/store', [UserLevelController::class, 'store'])->name('user-levels.store');

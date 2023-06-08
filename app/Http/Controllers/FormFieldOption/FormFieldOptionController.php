@@ -90,6 +90,7 @@ class FormFieldOptionController extends Controller
                             ' . ($item == 1 ? '
                                 <a 
                                     href="#"
+                                    onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ', 0)"
                                     class="text-danger delete-website-btn"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-dash-circle" viewBox="0 0 16 16">
@@ -100,7 +101,7 @@ class FormFieldOptionController extends Controller
                 :
                 '<a 
                                 href="#"
-                                onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ')"
+                                onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ', 1)"
                                 class="text-success delete-website-btn"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -119,16 +120,16 @@ class FormFieldOptionController extends Controller
         // return view('pages.admin.formfieldoptions.edit_options', ['activated_fields' => $activated_fields]);
     }
 
-    public function update($formKey)
+    public function update(Request $request)
     {
-        dd($formKey);
         try {
-            $data = FormFieldOptionModel::where('license_key', $LKey)->first();
-            $data->$formKey = 1;
+            $fkey = $request->fKey;
+            $data = FormFieldOptionModel::where('license_key', $request->lKey)->first();
+            $data[$fkey] = $request->status;
             $data->save();
             return redirect()->back()->with('message', 'Field: ' . ucwords(str_replace('_', ' ', $formKey)) . ' activated');
-        } catch (\Exception $e) {
-            dd($e);
+        } catch (\Throwable $e) {
+            return ($e->getMessage());
         }
     }
 

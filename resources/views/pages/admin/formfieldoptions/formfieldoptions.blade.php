@@ -16,6 +16,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BREADCRUMB -->
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="page-meta">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -111,22 +112,22 @@
                 }
             }
 
-            function updateStatus(lKey, key = null) {
-                // AJAX request
-                var url = "{{ url('admin/user-field-options/update?lKey=:lKey') }}";
-                url = url.replace(':lKey',lKey);
-                // url = url.replace(':key',key);
-                console.log(url);
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    success: function(response){
-                        // Add employee details
-                        console.log(response);
-                        // $('#ufo tbody').html(response.html);
+            function updateStatus(lKey=null, fKey = null, status=0) {
+                var url = "{{ url('admin/user-field-options/update') }}";
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
+                $.ajax({
+                    type:'POST',
+                    url: url,
+                    data:{lKey:lKey, fKey:fKey, status:status},
+                    success:function(data){
+                      location.reload();
+                    }
+                });
             }
         </script>
     </x-slot>
