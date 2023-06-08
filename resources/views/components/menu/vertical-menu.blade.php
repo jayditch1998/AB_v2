@@ -165,7 +165,7 @@
             </div>
           </a>
         </li>
-        @if (!auth()->user()->role->name == "Manager")
+        @if (auth()->user()->role->name == "Admin")
         <li class="menu {{ Request::routeIs('admin.shortcodes') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/shortcodes" aria-expanded="false" class="dropdown-toggle">
             <div class="">
