@@ -41,7 +41,14 @@ class CategoriesController extends Controller
                 'user_id' => 'required',
             ]);
             CategoriesModel::insert($data);
-            return redirect('admin/categories');
+            $user = UsersModel::find($request->input('user_id'));
+            // return redirect('admin/categories');
+            // return response()->json('Success!', 200);
+            return response()->json([
+              'name' => $request->input('name'),
+              'description' => $request->input('description'),
+              'user' => $user->name
+          ]);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -57,7 +64,14 @@ class CategoriesController extends Controller
                 'user_id' => 'required',
             ]);
             CategoriesModel::insert($data, $request->id);
-            return redirect('admin/categories');
+            $user = UsersModel::find($request->user_id);
+            return response()->json([
+              'id' => $request->id,
+              'name' => $request->input('name'),
+              'description' => $request->input('description'),
+              'user' => $user->name,
+              'user_id'=> $user->id
+          ]);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
