@@ -48,7 +48,7 @@ class CategoriesController extends Controller
               'name' => $request->input('name'),
               'description' => $request->input('description'),
               'user' => $user->name
-          ]);
+            ]);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }

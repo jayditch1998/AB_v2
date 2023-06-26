@@ -29,14 +29,12 @@
     <div class="row layout-top-spacing">
 
         <div class="col-sm-12 pb-3 d-flex justify-content-end">
-            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Add Website</button>
+            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#createModal">Add Website</button>
         </div>
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-8">
-                <table id="zero-config" class="table dt-table-hover" style="width:100%">
-
-
+                <table id="zero-config" class="table dt-table-hover" style="width:100%" data-table="myTable">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -50,11 +48,11 @@
                     </thead>
                     <tbody>
                     @foreach($data as $website)
-                        <tr>
+                        <tr data-id ="{{$website->id}}">
                             <td>{{$website->user->name}}</td>
                             <td>{{$website->name}}</td>
                             <td>{{$website->category_name}}</td>
-                            <td><a target="_blank" href="{{$website->url}}">{{ __('Visit Website') }}</td>
+                            <td><a target="_blank" href="{{$website->url}}">{{ __('Visit Website') }} </a></td>
                             <td>
                                 @if ($website->status != 1)
                                 <span class="alert alert-danger p-1 rounded-lg">{{ __('Inactive') }}</span>
@@ -102,7 +100,7 @@
                 </table>
 
                 <!-- Create Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -114,7 +112,7 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/websites/create'>
+                                <form method="post" action='/admin/websites/create' id="websiteCreateForm">
                                     @csrf
                                     <div class="form-group">
                                         <label for="exampleFormControlInput1">Website Name</label>
@@ -166,7 +164,7 @@
                             <div class="modal-body">
                                 <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                                <form method="post" action='/admin/websites/update'>
+                                <form method="post" id='websiteEditForm' action='/admin/websites/update'>
                                     @csrf
                                     <input type="hidden" id="website_id" name="id">
                                     <div class="form-group">
@@ -240,6 +238,112 @@
                 owner.text = user_name;
                 document.getElementById("website_id").value = id;
             }
+
+            // Handle Submit form
+
+            document.getElementById('websiteCreateForm').addEventListener('submit', function(event) {
+              event.preventDefault(); // Prevent page refresh
+
+              // Get form data
+              var formData = new FormData(this);
+
+              // Make an AJAX request to submit the form
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', this.action, true);
+              
+              var csrfToken = document.querySelector('meta[name="csrf-token"]');
+              if (csrfToken) {
+                  xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+              }
+
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      // Form submitted successfully
+                      var response = JSON.parse(xhr.responseText);
+                      // Add the submitted data to the table
+                      var tableBody = document.querySelector('table[data-table="myTable"] tbody');
+                      var firstRow = tableBody.rows[0];
+                      var newRow = tableBody.insertRow(firstRow);
+
+                      var userName = newRow.insertCell(0);
+                      var websiteName = newRow.insertCell(1);
+                      var categoryName = newRow.insertCell(2);
+                      var url = newRow.insertCell(3);
+                      var status = newRow.insertCell(4);
+                      var businessCount = newRow.insertCell(5);
+
+                      userName.innerHTML = response.user;
+                      websiteName.innerHTML = response.name;
+                      categoryName.innerHTML = response.category;
+                      url.innerHTML = '<a target="_blank" href='+response.url+'>Visit Website</a>';
+                      status.innerHTML = '<span class="alert alert-danger p-1 rounded-lg">Inactive</span>';
+                      businessCount.innerHTML = '0 Businesses';
+                      
+                      // Clear the form inputs
+                      document.getElementById('websiteCreateForm').reset();
+                      // Close the modal
+                      $("#createModal").modal('hide');
+                  } else {
+                      // Handle error cases
+                      console.log(xhr.responseText);
+                  }
+              };
+
+              xhr.send(formData);
+              return false;
+        });
+
+        const editForm = document.getElementById('websiteEditForm');
+
+        editForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          // Get form data
+          var formData = new FormData(this);
+          // Make an AJAX request to submit the form
+          var xhr = new XMLHttpRequest();
+              xhr.open('POST', this.action, true);
+              
+              var csrfToken = document.querySelector('meta[name="csrf-token"]');
+              if (csrfToken) {
+                  xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+              }
+
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      // Form submitted successfully
+                      var response = JSON.parse(xhr.responseText);
+                      
+                      var tableBody = document.querySelector('table[data-table="myTable"] tbody');
+                      var rowToUpdate = tableBody.querySelector('[data-id="' + response.id + '"]');
+                      // Update the cells with the new values
+
+                      var name = rowToUpdate.cells[0];
+                      var description = rowToUpdate.cells[1];
+                      var user = rowToUpdate.cells[2];
+
+                      var userName = rowToUpdate.cells[0];
+                      var websiteName = rowToUpdate.cells[1];
+                      var categoryName = rowToUpdate.cells[2];
+                      var url = rowToUpdate.cells[3];
+                      var status = rowToUpdate.cells[4];
+                      var businessCount = rowToUpdate.cells[5];
+
+                      userName.textContent = response.user;
+                      websiteName.textContent = response.name;
+                      categoryName.textContent = response.category;
+                      // url.textContent = '<a target="_blank" href='+response.url+'>Visit Website</a>';
+                      // status.textContent = '<span class="alert alert-danger p-1 rounded-lg">Inactive</span>';
+                      // businessCount.textContent = '0 Businesses';
+
+                      $("#editModal").modal('hide');
+                  } else {
+                      console.log(xhr.responseText);
+                  }
+              };
+
+              xhr.send(formData);
+              return false;
+        });
         </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

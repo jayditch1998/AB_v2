@@ -48,7 +48,16 @@ class WebsitesController extends Controller
                 'user_id' => 'required',
             ]);
             WebsitesModel::insert($data);
-            return redirect('admin/websites');
+            $category = CategoriesModel::find($request->category_id);
+            $user = UsersModel::find($request->user_id);
+            return response()->json([
+              'name' => $request->input('name'),
+              'url' => $request->input('url'),
+              'user' => $user->name,
+              'category' => $user->name,
+              'status' => 'Inactive',
+              'business_count' => 0
+            ], 200);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -74,8 +83,18 @@ class WebsitesController extends Controller
                 'url' => 'required',
                 'user_id' => 'required',
             ]);
-            WebsitesModel::insert($data, $request->id);
-            return redirect('admin/websites');
+            $website = WebsitesModel::insert($data, $request->id);
+            $category = CategoriesModel::find($request->category_id);
+            $user = UsersModel::find($request->user_id);
+            return response()->json([
+              'name' => $request->input('name'),
+              'url' => $request->input('url'),
+              'user' => $user->name,
+              'category' => $user->name,
+              'status' => 'Inactive',
+              'business_count' => 0,
+              'id' => $request->input('id'),
+            ], 200);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
