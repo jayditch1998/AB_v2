@@ -9,7 +9,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <table id="ufo" class="table dt-table-hover" style="width:100%">
+                <table id="ufo" class="table dt-table-hover" style="width:100%" data-table="myTable">
                 <thead>
                     <tr role="row">
                         <th>{{__('Name')}}</th>

@@ -274,7 +274,6 @@
                       name.textContent = response.name;
 
                       var description = rowToUpdate.cells[1];
-
                       description.textContent = response.description;
 
                       var user = rowToUpdate.cells[2];
