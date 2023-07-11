@@ -94,11 +94,16 @@ class RequestsController extends Controller
             $addWebsiteBusiness = BusinessesModel::create($filtered);
             $pendingData->status = 'approved';
             $pendingData->save();
-            if(auth()->user()->role_id==1){
-                return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully approved');
-            }else{
-                return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully approved');
-            }
+            // if(auth()->user()->role_id==1){
+            //     return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully approved');
+            // }else{
+            //     return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully approved');
+            // }
+
+            return response()->json([
+                'id' => $request->input('id'),
+                'status' => $pendingData->status
+              ], 200);
 
         }catch(\Exception $e){
             return redirect('admin/online_request')->with('message', 'Something went wrong!');
@@ -135,7 +140,8 @@ class RequestsController extends Controller
     {
         PendingOrdersModel::findOrFail($request->id)->delete();
         if(auth()->user()->role_id==1){
-            return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully deleted');
+            // return redirect('admin/online_request')->with('message', 'Pending Orders/Request is Successfully deleted');
+        return response()->json('Success!', 200);
         }else{
             return redirect('/online_request')->with('message', 'Pending Orders/Request is Successfully deleted');
         }
@@ -144,7 +150,11 @@ class RequestsController extends Controller
 
     public function declineAll()
     {
-        PendingOrdersModel::where('user_id',auth()->user()->id)->delete();
+        if(auth()->user()->role_id==1){
+            PendingOrdersModel::where('status', 'pending')->delete();
+        }else{
+            PendingOrdersModel::where('user_id',auth()->user()->id)->delete();
+        }
         // $pendingData = RequestsModel::where('user_id',auth()->user()->id)->get();
             // foreach ($pendingData as $key => $value) {
             //     $pendingDataToArray = $value->toArray();

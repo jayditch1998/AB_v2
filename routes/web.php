@@ -138,10 +138,10 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/delete', [RequestsController::class, 'delete'])->name('online_request.delete');
     Route::post('/update', [RequestsController::class, 'update'])->name('online_request.update');
 
-    Route::get('/approve', [RequestsController::class, 'approve'])->name('online_request.approve');
+    Route::post('/approve', [RequestsController::class, 'approve'])->name('online_request.approve');
     Route::post('/approve/all/requests', [RequestsController::class, 'approveAll'])->name('online_request.approve.all');
 
-    Route::get('/decline', [RequestsController::class, 'decline'])->name('online_request.decline');
+    Route::post('/decline', [RequestsController::class, 'decline'])->name('online_request.decline');
     Route::post('/decline/all/requests', [RequestsController::class, 'declineAll'])->name('online_request.decline.all');
   });
 
