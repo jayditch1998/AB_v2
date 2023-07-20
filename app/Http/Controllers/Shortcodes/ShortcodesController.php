@@ -10,39 +10,38 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class ShortcodesController extends Controller
 {
     public function index(Request $request)
     {
-       
-        
+
+
         if (auth()->user()->role->name == "Admin") {
             $shortcodes = ShortcodesModel::orderBy('position', 'asc')
-            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
-                return $query->where('shortcode_category_id', $request['category']);
-            })
-            ->when(!empty($request['q']), function ($query) use ($request) {
-                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
-            })
-            ->get();
+                ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                    return $query->where('shortcode_category_id', $request['category']);
+                })
+                ->when(!empty($request['q']), function ($query) use ($request) {
+                    return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+                })
+                ->get();
             $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
 
             return view('pages.admin.shortcodes.index', compact('shortcodes', 'shortcode_categories'));
-        }elseif (auth()->user()->role->name == "User") {
+        } elseif (auth()->user()->role->name == "User") {
             $shortcodes = ShortcodesModel::orderBy('position', 'asc')
-            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
-                return $query->where('shortcode_category_id', $request['category']);
-            })
-            ->when(!empty($request['q']), function ($query) use ($request) {
-                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
-            })
-            ->get();
+                ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                    return $query->where('shortcode_category_id', $request['category']);
+                })
+                ->when(!empty($request['q']), function ($query) use ($request) {
+                    return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+                })
+                ->get();
 
             return view('pages.admin.shortcodes.index', compact('shortcodes'));
         }
-
-        
     }
 
     public function wpPluginIndex()
@@ -50,30 +49,28 @@ class ShortcodesController extends Controller
         $request = request();
         if (auth()->user()->role->name == "Admin") {
             $shortcodes = ShortcodesModel::where('display_on_wp', 1)->orderBy('position', 'asc')
-            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
-                return $query->where('shortcode_category_id', $request['category']);
-            })
-            ->when(!empty($request['q']), function ($query) use ($request) {
-                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
-            })
-            ->get();
+                ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                    return $query->where('shortcode_category_id', $request['category']);
+                })
+                ->when(!empty($request['q']), function ($query) use ($request) {
+                    return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+                })
+                ->get();
             $shortcode_categories = ShortcodesCategoryModel::all('id', 'name');
 
             return view('pages.admin.wp-plugins.index', compact('shortcodes', 'shortcode_categories'));
-
-        }elseif (auth()->user()->role->name == "User") {
+        } elseif (auth()->user()->role->name == "User") {
             $shortcodes = ShortcodesModel::where('display_on_wp', 1)->orderBy('position', 'asc')
-            ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
-                return $query->where('shortcode_category_id', $request['category']);
-            })
-            ->when(!empty($request['q']), function ($query) use ($request) {
-                return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
-            })
-            ->get();
+                ->when(!empty($request['category']) && ($request['category'] != "all"), function ($query) use ($request) {
+                    return $query->where('shortcode_category_id', $request['category']);
+                })
+                ->when(!empty($request['q']), function ($query) use ($request) {
+                    return $query->Where('name', 'LIKE', '%' . $request['q'] . '%');
+                })
+                ->get();
 
             return view('pages.user.shortcodes.shortcodes', compact('shortcodes'));
         }
-
     }
 
     public function downloadPlugin()
@@ -84,8 +81,9 @@ class ShortcodesController extends Controller
 
     public function create(Request $request)
     {
+        // dd($request->all());
         $data = $request->all();
-        
+
         if (!Schema::hasColumn('businesses', $data['name']) && !ShortcodesModel::where('name', $data['name'])->exists()) {
 
             $Position = ShortcodesModel::max('position') + 1;
@@ -106,14 +104,21 @@ class ShortcodesController extends Controller
                 Schema::table('pending_orders', function ($table) use ($newColumn) {
                     $table->string($newColumn)->nullable();
                 });
-                // $shortcode_category_id = $data['data'],;
-                ShortcodesModel::create(array_merge($data, [
+                $shortcodeModel = ShortcodesModel::create(array_merge($data, [
                     'position' => $Position,
                     'shortcode' => $shortcode,
                     'business_column' => $newColumn,
                 ]));
-
-                return redirect('/admin/shortcodes')->with('message', 'New Shortcode Successfully Added');
+                $shortcode_category = ShortcodesCategoryModel::find($request->shortcode_category_id);
+                return response()->json([
+                    'name' => $request->input('name'),
+                    'shortcode' => $shortcode,
+                    'shortcode_category' => $shortcode_category->name,
+                    'required' => $request->required,
+                    'enable' => $request->enable,
+                    'position' => $shortcodeModel->position,
+                ]);
+                // return redirect('/admin/shortcodes')->with('message', 'New Shortcode Successfully Added');
             } catch (\Throwable $th) {
                 dd($th->getMessage());
                 return redirect('admin/shortcodes/')->with('error', $th->getMessage());
@@ -125,7 +130,7 @@ class ShortcodesController extends Controller
 
     public function update(Request $request)
     {
-        
+
         $data = request()->validate([
             'name' => ['required '],
             'shortcode_category_id' => 'required',
@@ -147,13 +152,14 @@ class ShortcodesController extends Controller
         $shortcode = '[AgencyBuilder_' . $newColumn . ']';
 
         try {
-            // Schema::table('businesses', function($table) use ($oldColumn, $newColumn){
-            //     $table->renameColumn($oldColumn, $newColumn);
-            // });
-            // Schema::table('user_onlineforms', function(Blueprint $table) use ($oldColumn, $newColumn){
-            //     $table->renameColumn($oldColumn, $newColumn);
-            // });
-            ShortcodesModel::findOrFail($shortcode_id)->update(array_merge($data, [
+            DB::beginTransaction();
+            Schema::table('businesses', function($table) use ($oldColumn, $newColumn){
+                $table->renameColumn($oldColumn, $newColumn);
+            });
+            Schema::table('user_onlineforms', function(Blueprint $table) use ($oldColumn, $newColumn){
+                $table->renameColumn($oldColumn, $newColumn);
+            });
+            $shortcodeModel = ShortcodesModel::findOrFail($shortcode_id)->update(array_merge($data, [
                 'business_column' => $newColumn,
                 'shortcode' => $shortcode,
                 'enable' => $enable,
@@ -162,10 +168,25 @@ class ShortcodesController extends Controller
                 'required' => $required,
                 'full' => $full,
             ]));
-
-            return redirect('/admin/shortcodes')->with('message', 'Shortcode Successfully updated');
-        } catch (\Exception $e) {
-            return redirect('/admin/shortcodes')->with('error', $e);
+            
+            $shortcode_category = ShortcodesCategoryModel::find($request->shortcode_category_id);
+            return response()->json([
+                'id' => $request->input('id'),
+                'name' => $request->input('name'),
+                'shortcode' => $shortcode,
+                'shortcode_category' => $shortcode_category->name,
+                'required' => $request->required,
+                'enable' => $request->enable,
+                'position' => $request->position,
+                'show_to_dashboard' => $request->show_to_dashboard,
+                'display_on_wp' => $request->display_on_wp,
+                'full' => $request->full,
+            ]);
+            DB::commit();
+            // return redirect('/admin/shortcodes')->with('message', 'Shortcode Successfully updated');
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), 500);
+            DB::rollBack();
         }
     }
 }
