@@ -49,7 +49,6 @@
                             <th>Shortcode</th>
                             <th>Category</th>
                             <th>Position</th>
-                            <th class="no-content">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,22 +58,7 @@
                             <td class="pl-3">{{$shortcode->name}}</td>
                             <td class="pl-3">{{$shortcode->shortcode}}</td>
                             <td class="pl-3">{{$shortcode->shortcodeCategory['name']}}</td>
-                            <td class="pl-4 hide-in-mobile">{{$shortcode->position}}</td>
-                            <td class="pl-4">
-                                @if ($shortcode->name == 'Business Name')
-                                    <div class="align-items-baseline">                                
-                                        <i class="fas fa-edit text-secondary"></i>
-                                        <i class="fas fa-trash-alt text-secondary"></i>                   
-                                    </div>
-                                @else
-                                    <div class="align-items-baseline">                                
-                                        <a href="/admin/shortcodes/{{$shortcode->id}}/edit" class="view-details mr-1"><i class="fas fa-edit"></i></a>
-                                        <a class="text-danger delete-shortcode-btn" href="" data-shortcode_business_column="{{$shortcode->business_column}}" data-shortcode_id="{{$shortcode->id}}" href="#" data-toggle="modal" data-target="#AdminDeleteShortcode"><i class="fas fa-trash-alt"></i></a>                         
-                                    </div>
-                                @endif 
-                                
-                            </td>                      
-                                    
+                            <td class="pl-4 hide-in-mobile">{{$shortcode->position}}</td> 
                         </tr>
                                 
                     @empty
