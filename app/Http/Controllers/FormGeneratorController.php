@@ -102,15 +102,34 @@ class FormGeneratorController extends Controller
 
     public function generate(Request $request){
         // dd($request->all());
-        $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
-        if(isset(request()->website)){
-            $website = WebsitesModel::find($request->website);
+        // $websites = WebsitesModel::where('user_id',auth()->user()->id)->get();
+        // if(isset(request()->website)){
+        //     $website = WebsitesModel::find($request->website);
+        //     $user = User::find($website->user_id);
+        //     $website = $website->name;
+        //     $LKey = $user->license_key;
+        //     return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites,'website' => $website,'LKey' => $LKey]);
+        // }else{
+        //     return 'generateOnlineForm Error!';
+        // }
+
+        try {
+            $data = $request->validate([
+                'website' => 'required',
+            ]);
+            
+            $website = WebsitesModel::find($request->input('website'));
             $user = User::find($website->user_id);
             $website = $website->name;
             $LKey = $user->license_key;
-            return view('pages.admin.onlineform.index',['title' => 'Admin Dashboard', 'websites' => $websites,'website' => $website,'LKey' => $LKey]);
-        }else{
-            return 'generateOnlineForm Error!';
+            $str = '<iframe src="https://app.agencybuilderdev.io/form/'.$website.'/'.$LKey.'" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+            // return redirect('admin/categories');
+            // return response()->json('Success!', 200);
+            return response()->json([
+              'usrtxt' => $str,
+            ]);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
     }
 }

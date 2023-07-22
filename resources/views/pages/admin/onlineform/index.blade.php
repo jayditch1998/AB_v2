@@ -30,7 +30,7 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <div class="user-profile">
                     <div class="widget-content widget-content-area">
-                      <form method="post" action='{{route('admin.form-generator.generate')}}'>
+                      <form method="post" id='generateForm' action='{{route('admin.form-generator.generate')}}'>
                         @csrf
                         <div class="input-group mb-3">
                           <select class="form-control" name="website">
@@ -43,8 +43,8 @@
                           </select>
                         </div>
 
-                        <div class="input-group mb-3">
-                          <textarea rows="20" cols="100" name="usrtxt" wrap="hard" class="form-control" aria-label="With textarea">@isset($LKey)<iframe src="https://app.agencybuilderdev.io/form/{{$website}}/{{$LKey}}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div id="textArea" class="input-group mb-3">
+                          <textarea rows="20" cols="100" name="usrtxt" id='usrtxt' wrap="hard" class="form-control" aria-label="With textarea">@isset($LKey)<iframe src="https://app.agencybuilderdev.io/form/{{$website}}/{{$LKey}}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             @endisset</textarea>
                         </div>
                         <div class="modal-footer">
@@ -68,6 +68,46 @@
             setTimeout(() => {
                 feather.replace();
             }, 10);
+
+             // Listen for the form submission event
+             document.getElementById('generateForm').addEventListener('submit', function(event) {
+                        event.preventDefault(); // Prevent page refresh
+
+                        // Get form data
+                        var formData = new FormData(this);
+
+                        // Make an AJAX request to submit the form
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', this.action, true);
+
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]');
+                        if (csrfToken) {
+                            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+                        }
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                // Form submitted successfully
+                                var response = JSON.parse(xhr.responseText);
+                                // Add the submitted data to the table
+                                
+                                // var tableBody = document.querySelector('textarea').value = response.usrtxt;
+                                document.getElementById('usrtxt').innerHTML = response.usrtxt;
+                        
+                                // alert(response.usrtxt);
+                                // Clear the form inputs
+                                document.getElementById('generateForm').reset();
+                                // Close the modal
+                              
+                            } else {
+                                // Handle error cases
+                                console.log(xhr.responseText);
+                            }
+                        };
+
+                        xhr.send(formData);
+                        return false;
+                    });
         </script>
         </x-slot>
         <!--  END CUSTOM SCRIPTS FILE  -->

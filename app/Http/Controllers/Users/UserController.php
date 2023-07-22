@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -51,27 +52,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            
 
-            $data = $this->validate($request,[
+
+            $data = $this->validate($request, [
                 'name' => 'required',
                 'email' => 'required',
                 'mobile' => 'required',
-                'role_id' => 
-                    'required'
-                    
-                ,
-                'user_level_id' => 
-                    'required'
-                    
-                ,
-                'password' => 
-                    'required'
-                    
-                ,
+                'role_id' =>
+                'required',
+                'user_level_id' =>
+                'required',
+                'password' =>
+                'required',
                 'status' => 'required',
             ]);
-            
+
             $userlevel = Userlevel::findOrFail($data['user_level_id']);
             //dd($userlevel->business_limit);
             $dt = Carbon::now();
@@ -88,26 +83,17 @@ class UserController extends Controller
                 // 'license_key' => $license_key,
                 'password' => Hash::make($data['password']),
             ]);
-            
-            
 
-            // $admin = User::whereHas('role', function ($query) {
+            return response()->json([
+                'id' => $user->id,
+                'name' => str($user->name)->title,
+                'email' => $user->email,
+                'status' => str($user->status)->title,
+                'level' => str($user->level->name)->title,
+                'role' => str($user->role->name)->title,
+                'license' => str(Str::of($user->license_key)->substr(8, 50))->title
+              ]);
 
-            //     $query->where('name', '=', 'Admin');
-            // })->get();
-            // foreach ($admin as $key) {
-            //     $key->notify(new \App\Notifications\NewUserAdminNotify());
-            // }
-
-            // $admin->sendEmailVerificationNotification();
-
-
-
-
-
-
-
-            return redirect('admin/users')->withErrors($data,'user');
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -157,9 +143,21 @@ class UserController extends Controller
                 'status' => 'required',
                 'license_key' => 'required',
             ]);
+
+
             $website_credit = Userlevel::find($request->user_level_id);
             User::updateUser(array_merge(Arr::except($data, ['id']), ['website_credit' => $website_credit->website_limit]), $request->id);
-            return redirect('admin/users');
+
+            $user = User::find($data['id']);
+            return response()->json([
+                'id' => $user->id,
+                'name' => str($user->name)->title,
+                'email' => $user->email,
+                'status' => str($user->status)->title,
+                'level' => str($user->level->name)->title,
+                'role' => str($user->role->name)->title,
+                'license' => str(Str::of($user->license_key)->substr(8, 50))->title
+              ]);
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -173,10 +171,10 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        try{
+        try {
             User::deleteUser($request->id);
-            return redirect('admin/users'); 
-        }catch(\Throwable $th){
+            return redirect('admin/users');
+        } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }

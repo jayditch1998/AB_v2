@@ -49,7 +49,7 @@
             </div>
           @endif
           <div class="widget-content widget-content-area br-8 ">
-            <table id="zero-config" class="table dt-table-hover w-100">
+            <table id="zero-config" data-table="myTable" class="table dt-table-hover w-100">
 
 
               <thead>
@@ -66,7 +66,7 @@
               </thead>
               <tbody>
                 @foreach ($users as $user)
-                  <tr>
+                  <tr data-id="{{$user->id}}">
                     <td>{{ $user->id }}</td>
                     <td>{{ str($user->name)->title }}</td>
                     <td>{{ $user->email }}</td>
@@ -142,7 +142,7 @@
                   <div class="modal-body">
                     <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                    <form method="post" action='/admin/users/store'>
+                    <form method="post" id='createUser' action='/admin/users/store'>
                       @csrf
                       <div class="form-group">
                         <label for="exampleFormControlInput1">Name</label>
@@ -221,7 +221,7 @@
                   <div class="modal-body">
                     <!-- <h4 class="modal-heading mb-4 mt-2">Aligned Center</h4>
                                 <p class="modal-text">In hac habitasse platea dictumst. Proin sollicitudilacus in tincidunt. Integer nisl ex, sollicitudin eget nulla nec, pharlacinia nisl. Aenean nec nunc ex. Integer varius neque at dolor sceleriporttitor.</p> -->
-                    <form method="post" action='/admin/users/update'>
+                    <form method="post" id="userEditForm" action='/admin/users/update'>
                       @csrf
                       <input type="hidden" id="user_id" name="id">
                       <div class="form-group">
@@ -324,6 +324,130 @@
             document.getElementById("license_key").value = license_key;
             document.getElementById("user_id").value = id;
           }
+
+
+          // Listen for the form submission event
+          document.getElementById('createUser').addEventListener('submit', function(event) {
+                        event.preventDefault(); // Prevent page refresh
+
+                        // Get form data
+                        var formData = new FormData(this);
+
+                        // Make an AJAX request to submit the form
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', this.action, true);
+
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]');
+                        if (csrfToken) {
+                            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+                        }
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                // Form submitted successfully
+
+                                var response = JSON.parse(xhr.responseText);
+                                // Add the submitted data to the table
+
+                                var tableBody = document.querySelector('table[data-table="myTable"] tbody');
+                                var firstRow = tableBody.rows[0];
+                                var newRow = tableBody.insertRow(firstRow);
+                                var idCell = newRow.insertCell(0);
+                                var nameCell = newRow.insertCell(1);
+                                var emailCell = newRow.insertCell(2);
+                                var statusCell = newRow.insertCell(3);
+                                var levelCell = newRow.insertCell(4);
+                                var roleCell = newRow.insertCell(5);
+                                var licenseCell = newRow.insertCell(6);
+                                idCell.innerHTML = response.id;
+                                nameCell.innerHTML = response.name;
+                                emailCell.innerHTML = response.email;
+                                statusCell.innerHTML = response.status;
+                                levelCell.innerHTML = response.level;
+                                roleCell.innerHTML = response.role;
+                                licenseCell.innerHTML = response.license;
+                                $("#exampleModalCenter").modal('hide');
+                                // Clear the form inputs
+                                document.getElementById('categoryCreateForm').reset();
+                                // Close the modal
+
+                            } else {
+                                // Handle error cases
+                                console.log(xhr.responseText);
+                            }
+                        };
+
+                        xhr.send(formData);
+                        return false;
+                    });
+
+                    const editForm = document.getElementById('userEditForm');
+
+                    editForm.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        // Get form data
+                        var formData = new FormData(this);
+                        // Make an AJAX request to submit the form
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', this.action, true);
+
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]');
+                        if (csrfToken) {
+                            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+                        }
+
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                // Form submitted successfully
+                                var response = JSON.parse(xhr.responseText);
+                                editForm.elements['name'].value = response.name;
+                                editForm.elements['email'].value = response.description;
+                                editForm.elements['mobile'].value = response.user_id;
+                                editForm.elements['role_id'].value = response.name;
+                                editForm.elements['user_level_id'].value = response.description;
+                                editForm.elements['status'].value = response.user_id;
+                                editForm.elements['license_key'].value = response.description;
+                                editForm.elements['user_id'].value = response.user_id;
+
+
+
+                                var tableBody = document.querySelector('table[data-table="myTable"] tbody');
+                                var rowToUpdate = tableBody.querySelector('[data-id="' + response.id + '"]');
+                                // Update the cells with the new values
+                                var id = rowToUpdate.cells[0];
+                                id.textContent = response.id;
+
+                                var name = rowToUpdate.cells[1];
+                                name.textContent = response.name;
+
+                                var email = rowToUpdate.cells[2];
+                                email.textContent = response.email;
+
+                                var status = rowToUpdate.cells[3];
+                                status.textContent = response.status;
+
+                                var level = rowToUpdate.cells[4];
+                                level.textContent = response.level;
+
+                                var role = rowToUpdate.cells[5];
+                                role.textContent = response.role;
+
+                                var license = rowToUpdate.cells[6];
+                                license.textContent = response.license;
+
+                                // Clear the form inputs
+                                // document.getElementById('categoryEditForm').reset();
+                                // Close the modal
+                                $("#editModal").modal('hide');
+                            } else {
+                                // Handle error cases
+                                console.log(xhr.responseText);
+                            }
+                        };
+
+                        xhr.send(formData);
+                        return false;
+                    })
         </script>
         </x-slot>
         <!--  END CUSTOM SCRIPTS FILE  -->
