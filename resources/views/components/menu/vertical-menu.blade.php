@@ -120,7 +120,7 @@
             </li>
           </ul>
         </li>
-        @if (!auth()->user()->role->name == "Manager")
+        @if (auth()->user()->role->name == "Admin")
         <li class="menu {{ Request::routeIs('admin.businesses') ? 'active' : '' }}">
           <a href="{{ getRouterValue() }}/admin/businesses" aria-expanded="false" class="dropdown-toggle">
             <div class="">

@@ -16,7 +16,7 @@ class UserLevelController extends Controller
     public function index()
     {
         try {
-            
+
             $levels = Userlevel::all();
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -43,7 +43,7 @@ class UserLevelController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $data = $request->validate([
                 'name' => 'required',
                 'website_limit' => 'required',
@@ -51,10 +51,17 @@ class UserLevelController extends Controller
                 'approval_limit' => 'required',
                 'approval_hours' => 'required',
             ]);
-            Userlevel::insert($data,null);
-        return redirect('admin/user-levels'); 
-        }catch(\Throwable $th){
-            return $th->getMessage();
+            Userlevel::insert($data, null);
+            return response()->json([
+                'name' => $request->name,
+                'website_limit' => $request->website_limit,
+                'business_limit' => $request->business_limit,
+                'approval_limit' => $request->approval_limit,
+                'approval_hours' => $request->approval_hours,
+
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
         }
     }
 
@@ -89,7 +96,7 @@ class UserLevelController extends Controller
      */
     public function update(Request $request)
     {
-        try{
+        try {
             $data = $request->validate([
                 'id' => 'required',
                 'name' => 'required',
@@ -98,11 +105,19 @@ class UserLevelController extends Controller
                 'approval_limit' => 'required',
                 'approval_hours' => 'required',
             ]);
-            
-            Userlevel::insert($data,$data['id']);
-        return redirect('admin/user-levels'); 
-        }catch(\Throwable $th){
-            return $th->getMessage();
+
+            Userlevel::insert($data, $data['id']);
+            return response()->json([
+                'id' => $request->id,
+                'name' => $request->name,
+                'website_limit' => $request->website_limit,
+                'business_limit' => $request->business_limit,
+                'approval_limit' => $request->approval_limit,
+                'approval_hours' => $request->approval_hours,
+
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
         }
     }
 
@@ -114,10 +129,10 @@ class UserLevelController extends Controller
      */
     public function destroy(Request $request)
     {
-        try{
+        try {
             Userlevel::deleteLevel($request->id);
-            return redirect('admin/user-levels'); 
-        }catch(\Throwable $th){
+            return redirect('admin/user-levels');
+        } catch (\Throwable $th) {
             return $th->getMessage();
         }
     }
