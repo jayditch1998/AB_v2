@@ -34,7 +34,7 @@ class WebsitesController extends Controller
             return view('pages.user.websites.websites', compact('data', 'categories', 'users'));
         }
 
-
+        
     }
 
     public function create(Request $request)
@@ -54,7 +54,7 @@ class WebsitesController extends Controller
               'name' => $request->input('name'),
               'url' => $request->input('url'),
               'user' => $user->name,
-              'category' => $category->name,
+              'category' => $user->name,
               'status' => 'Inactive',
               'business_count' => 0
             ], 200);

@@ -23,7 +23,7 @@ class RequestsController extends Controller
                 $shortcodes = ShortcodesModel::where('enable', '1')->where('show_to_dashboard', '1')->orderBy('position', 'asc');
                 $shortcodes = $shortcodes->pluck('business_column') ;
                 $users = UsersModel::getActiveUsers()->get();
-
+    
                 $shortcodeInColumn = ['website_id'];
                 foreach ($shortcodes as $shortcode){
                     if (Schema::hasColumn('businesses', $shortcode))
@@ -42,7 +42,7 @@ class RequestsController extends Controller
                 }else{
                     $businesses = PendingOrdersModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->where('user_id', auth()->user()->id)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->get();
                 }
-
+    
                 // dd($businesses, $shortcodeInColumn);
                 return view('pages.admin.requests.onlinerequests', compact('businesses','shortcodeInColumn', 'users'));
             }catch(\Throwable $th){
@@ -54,7 +54,7 @@ class RequestsController extends Controller
                 $shortcodes = ShortcodesModel::where('enable', '1')->where('show_to_dashboard', '1')->orderBy('position', 'asc');
                 $shortcodes = $shortcodes->pluck('business_column') ;
                 $users = UsersModel::getActiveUsers()->get();
-
+    
                 $shortcodeInColumn = ['website_id'];
                 foreach ($shortcodes as $shortcode){
                     if (Schema::hasColumn('businesses', $shortcode))
@@ -73,7 +73,7 @@ class RequestsController extends Controller
                 }else{
                     $businesses = PendingOrdersModel::select(array_merge($shortcodeInColumn,['id'],['created_at']))->where('verified', 1)->where('user_id', auth()->user()->id)->has('website')->orderBy('status', 'desc')->orderBy('updated_at', 'desc')->get();
                 }
-
+    
                 // dd($businesses, $shortcodeInColumn);
                 return view('pages.user.requests.onlinerequests', compact('businesses','shortcodeInColumn', 'users'));
             }catch(\Throwable $th){
@@ -81,9 +81,9 @@ class RequestsController extends Controller
             }
         }
 
-
+        
     }
-
+    
     public function approve(Request $request)
     {
         try {

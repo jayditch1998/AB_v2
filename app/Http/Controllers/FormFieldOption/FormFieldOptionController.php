@@ -59,7 +59,7 @@ class FormFieldOptionController extends Controller
             }
             return view('pages.user.formfieldoptions.formfieldoptions', compact('lastResult'));
         }
-
+        
     }
 
     public function editUserFormOptions($user)
@@ -78,7 +78,7 @@ class FormFieldOptionController extends Controller
 
         $html = '';
         foreach ($toArray as $key => $item) {
-            $html .= '<tr data-id='.$key.'>
+            $html .= '<tr data-id='.$key.'>                            
                 <td>' . ucwords(str_replace('_', ' ', $key)) . '</td>
                     <td>
                         <span class=' . ($item == 1 ? 'alert alert-success p-1 rounded-lg' : 'alert alert-danger p-1 rounded-lg') . '>
@@ -86,9 +86,9 @@ class FormFieldOptionController extends Controller
                         </span>
                     </td>
                         <td class="pl-3">
-                            <div class="align-items-baseline">
+                            <div class="align-items-baseline">                           
                             ' . ($item == 1 ? '
-                                <a
+                                <a 
                                     href="#"
                                     onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ', 0)"
                                     class="text-danger delete-website-btn"
@@ -99,7 +99,7 @@ class FormFieldOptionController extends Controller
                                     </svg>
                                 </a>'
                 :
-                '<a
+                '<a 
                                 href="#"
                                 onclick="updateStatus(' . "'$LK'" . ', ' . "'$key'" . ', 1)"
                                 class="text-success delete-website-btn"
@@ -109,8 +109,8 @@ class FormFieldOptionController extends Controller
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
                             </a>') . '
-                            </div>
-                        </td>
+                            </div>  
+                        </td>  
                ';
         }
         $response['html'] = $html;

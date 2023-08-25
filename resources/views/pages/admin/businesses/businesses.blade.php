@@ -488,10 +488,10 @@
                                 var action = newRow.insertCell(8);
 
                                 user.innerHTML = response.user;
-                                website.innerHTML = `<a
-                                        target="_blank"
+                                website.innerHTML = `<a 
+                                        target="_blank" 
                                         href="${response.website}?business_code=${response.code}"
-                                        title="${response.website}?business_code=${response.code}"
+                                        title="${response.website}?business_code=${response.code}" 
                                     >${response.website}</a>`;
                                 business_name.innerHTML = response.business_name;
                                 business_email.innerHTML = response.business_email;
@@ -545,10 +545,10 @@
                                 var response = JSON.parse(xhr.responseText);
                                 console.log(editForm);
                                 // editForm.elements['user_id'].value = response.user;
-                                editForm.elements['website_id'].value = `<a
-                                        target="_blank"
+                                editForm.elements['website_id'].value = `<a 
+                                        target="_blank" 
                                         href="${response.website}?business_code=${response.code}"
-                                        title="${response.website}?business_code=${response.code}"
+                                        title="${response.website}?business_code=${response.code}" 
                                     >${response.website}</a>`;
                                 editForm.elements['business_name'].value = response.business_name;
                                 editForm.elements['business_owner'].value = response.business_owner;
@@ -566,10 +566,10 @@
                                 user.textContent = response.user;
 
                                 var website = rowToUpdate.cells[1];
-                                website.innerHTML = `<a
-                                        target="_blank"
+                                website.innerHTML = `<a 
+                                        target="_blank" 
                                         href="${response.website}?business_code=${response.code}"
-                                        title="${response.website}?business_code=${response.code}"
+                                        title="${response.website}?business_code=${response.code}" 
                                     >${response.website}</a>`;
 
                                 var business_name = rowToUpdate.cells[2];

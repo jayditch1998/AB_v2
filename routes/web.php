@@ -33,7 +33,6 @@ use Illuminate\Support\Facades\Auth;
 */
 // Route::get()
 Route::get('verification/{pending_id}/resendEmail', [VerficationController::class, 'resendEmail'])->name('verification.resendEmail');
-Route::get('/form/{id}/{key}', [OnlineRequestController::class, 'show'])->name('onlineform.show');
 Route::group(['middleware' => ['auth']], function(){
   Route::prefix('dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
@@ -190,16 +189,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
 Route::name('')->prefix('user')->group(function () {
   Route::prefix('websites')->group(function () {
     Route::get('/', [WebsitesController::class, 'index'])->name('websites');
-    Route::get('/{id}/businesses', [BusinessesController::class, 'indexUser'])->name('user.businesses.index');
-
   });
-  Route::prefix('user-field-options')->group(function () {
-    Route::get('/', [FormFieldOptionController::class, 'index'])->name('ufo');
-    Route::get('/destroy', [FormFieldOptionController::class, 'destroy'])->name('ufo.destroy');
-    Route::post('/update', [FormFieldOptionController::class, 'update'])->name('ufo.update');
-    Route::get('/{user}', [FormFieldOptionController::class, 'editUserFormOptions'])->name('ufo.editUserFormOptions');
-  });
-
 });
 
 require_once 'theme-routes.php';
